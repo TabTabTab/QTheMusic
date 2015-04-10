@@ -1,10 +1,13 @@
 package centralServer.database;
 
+import java.net.InetAddress;
 import java.util.LinkedList;
 
 public class ServerMonitor {
 	public static final int NO_AVAILABLE_ID = -1;
+	public static final String WRONG_ID = "-1"+ System.lineSeparator();
 	private LinkedList<Integer> availableIDs;
+	private InetAddress[] hostAddresses;
 
 	/**
 	 * Creates a Central Server Monitor, for handling multithreaded network
@@ -15,6 +18,7 @@ public class ServerMonitor {
 	 *            the maximum number of hosts the system can handle.
 	 */
 	public ServerMonitor(int capacity) {
+		hostAddresses = new InetAddress[capacity];
 		availableIDs = new LinkedList<Integer>();
 		for (int i = 0; i < capacity; i++) {
 			availableIDs.add(i);
@@ -52,4 +56,24 @@ public class ServerMonitor {
 			availableIDs.add(hostId);
 		}
 	}
+
+	/**
+	 * Given a certain id, get the host address to this given id if it exists.
+	 * If no address to the id is found a WRONG_ID package is return instead
+	 * 
+	 * @param id
+	 *            the hostId we want to get the address for
+	 * @return The address of the host as a string.
+	 */
+	public synchronized String getHostAddress(String id) {
+		int hostId = Integer.parseInt(id);
+		if (hostAddresses[hostId] == null) {
+			return WRONG_ID;
+		} else {
+			InetAddress address = hostAddresses[hostId];
+			hostAddresses[hostId] = null;
+			return address.toString()+System.lineSeparator();
+		}
+	}
+
 }
