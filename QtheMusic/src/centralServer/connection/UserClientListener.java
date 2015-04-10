@@ -5,7 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import centralServer.database.ServerMonitor;
-
+/**
+ * Creates a UserClientListener thread, which listens to the network on a certain
+ * port for a user client connection. If a connection is made create a new
+ * HostAddressFetcher thread
+ * 
+ * @author Shan
+ * 
+ */
 public class UserClientListener extends Thread {
 	private ServerMonitor monitor;
 	private int portNbr;
@@ -28,7 +35,7 @@ public class UserClientListener extends Thread {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Could not create a ServerSocket with portnumber " + portNbr);
 			e.printStackTrace();
 		}
 	}
