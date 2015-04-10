@@ -1,8 +1,8 @@
-package Connection;
+package connection;
 
 import java.io.InputStream;
 
-import Monitor.ConnectionMonitor;
+import monitor.ConnectionMonitor;
 
 public class NetworkReaderThread extends Thread {
 	InputStream is;

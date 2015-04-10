@@ -1,4 +1,4 @@
-package Monitor;
+package monitor;
 
 public interface ConnectionMonitor {
 

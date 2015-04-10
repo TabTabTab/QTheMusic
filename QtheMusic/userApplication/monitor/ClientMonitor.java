@@ -1,6 +1,6 @@
-package Monitor;
+package monitor;
 
-public class HostMonitor implements ConnectionMonitor{
+public class ClientMonitor implements ConnectionMonitor{
 
 	public synchronized void write(byte[] data) {
 		// TODO Auto-generated method stub
@@ -11,5 +11,4 @@ public class HostMonitor implements ConnectionMonitor{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
