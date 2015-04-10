@@ -1,4 +1,4 @@
-package monitor;
+package userApplication.monitor;
 
 public interface ConnectionMonitor {
 

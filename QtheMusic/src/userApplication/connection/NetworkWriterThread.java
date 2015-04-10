@@ -1,4 +1,4 @@
-package connection;
+package userApplication.connection;
 
 import java.io.OutputStream;
 

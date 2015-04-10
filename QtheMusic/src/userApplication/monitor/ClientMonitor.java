@@ -1,4 +1,4 @@
-package monitor;
+package userApplication.monitor;
 
 public class ClientMonitor implements ConnectionMonitor{
 
