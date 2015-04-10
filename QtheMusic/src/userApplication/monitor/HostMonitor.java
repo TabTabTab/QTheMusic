@@ -2,12 +2,12 @@ package userApplication.monitor;
 
 public class HostMonitor implements ConnectionMonitor{
 
-	public synchronized void write(byte[] data) {
+	public synchronized void write(String data) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public synchronized byte[] read() throws InterruptedException {
+	public synchronized String read() throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
 	}

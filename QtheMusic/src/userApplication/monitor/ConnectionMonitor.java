@@ -3,6 +3,6 @@ package userApplication.monitor;
 public interface ConnectionMonitor {
 
 	
-	public void write(byte[] data);
-	public byte[] read() throws InterruptedException;
+	public void write(String data);
+	public String read() throws InterruptedException;
 }
