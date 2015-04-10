@@ -1,0 +1,91 @@
+Packages sent between the UserHost and the CentralServer:
+
+|----------------|
+|                |
+|   UserHost     |
+|                |
+|                |
+|                |     set up host request (contains: an address and possibly a list of available songs )
+|----------------|  . . . . . . . . . . . . .>           
+					   the set up response ((if success)contains: a host ID)
+                    < . . . . . . . . . . .  |----------------|
+                                             |                |
+                                             | CentralServer  |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |----------------|
+                                             
+====================================================================================================                                
+                                             
+Packages sent between the UserClient and the CentralServer:                                           
+                                             
+                                             |----------------|
+                                             |                |
+                                             | CentralServer  |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |----------------|
+                       get host info(contains: a hostID)
+                       . . . . . . . . . . . . .>
+                       
+                       the set up response (if success:contains an address to the host and possibly a list
+                        of available songs)
+                    < . . . . . . . . . . .
+|----------------|
+|                |
+|   UserClient   |
+|                |
+|                |
+|                |
+|----------------|
+
+
+===================================================================================================
+
+
+Packages sent between the UserClient and the UserHost:                                           
+                                             
+                                             |----------------|
+                                             |                |
+                                             | UserHost       |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |                |
+                                             |----------------|
+                       set up connection()
+                       . . . . . . . . . . . . .>
+                       
+                       
+                     queue this song(contains: a trackId ..)
+                     . . . . . . . . . . . > 
+                     
+                     
+                     get the queue request()
+                     . . . . . . . . . . . . . . . >
+                     the current queue(contains: a track queue)
+                    < . . . . . . . . . . .
+|----------------|
+|                |
+|   UserClient   |
+|                |
+|                |
+|                |
+|----------------|
+
+
+
+
+==================================================================================================
+
+
+
+
+
