@@ -11,12 +11,14 @@ public class UserHost {
 	HostMusicQueue queue;
 	public UserHost(String folderPath){
 		monitor = new HostMonitor();
+		
 		ArrayList<String> songNames = getMusicFileNames(folderPath);
 		ArrayList<String> temp = getMusicFileNames(folderPath);
-		queue= new HostMusicQueue(temp);
+		queue = new HostMusicQueue(temp);
+		
 		queue.addToQueue(0);
 		queue.addToQueue(1);
-		MusicPlayer player = new MusicPlayer(queue,songNames,folderPath);
+		MusicPlayerThread player = new MusicPlayerThread(queue,songNames,folderPath);
 		player.start();
 		try {
 			Thread.sleep(1000*60*10);
@@ -39,7 +41,7 @@ public class UserHost {
 		String musicFilename;
 		for(File file : folder.listFiles()){
 			musicFilename=file.getName();
-			if(musicFilename.endsWith(".mp3")){
+			if(musicFilename.endsWith(".wav")){
 				musicFileNames.add(musicFilename);
 			}
 		}
