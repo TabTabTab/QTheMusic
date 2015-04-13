@@ -3,6 +3,7 @@ package MusicQueue;
 import java.util.ArrayList;
 
 public class HostMusicQueue extends MusicQueue {
+	String folderPath;
 	/**
 	 * Creates a new Host MusiqQueue
 	 * @param availableTracks a list with the names of available tracks,
@@ -17,7 +18,7 @@ public class HostMusicQueue extends MusicQueue {
 	 * @param queueIndex - the specified queue position of the track to be removed 
 	 * @return true if the track was successfully removed, otherwise false
 	 */
-	public boolean removeAtIndex(int queueIndex){
+	public synchronized boolean removeAtIndex(int queueIndex){
 		if(queueIndex>=0 && trackQueue.size()>queueIndex){
 			trackQueue.remove(queueIndex);
 			return true;
@@ -28,7 +29,7 @@ public class HostMusicQueue extends MusicQueue {
 	 * Removes the first track in the queue
 	 * @return true if the track was successfully removed, otherwise false
 	 */
-	public boolean removeFirst(){
+	public synchronized boolean removeFirst(){
 		if (!trackQueue.isEmpty()){
 			trackQueue.remove(0);
 			return true;
@@ -36,13 +37,32 @@ public class HostMusicQueue extends MusicQueue {
 		return false;
 	}
 	/**
+	 * gets the next song id to play, if there is no song the thread will sleep. When sucessfull the songID will be removed from the queue
+	 * @return
+	 */
+	public synchronized int getNextSongId(){
+		while(trackQueue.isEmpty()){
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return trackQueue.remove(0);
+	}
+	
+	
+	
+	/**
 	 * Adds the track with the specified trackId to the queue
 	 * @param trackId - the id of the track to be added
 	 * @return true if the track Id existed, otherwise false
 	 */
-	public boolean addToQueue(int trackId){
+	public synchronized boolean addToQueue(int trackId){
 		if(trackId>=0 && availableTracks.size()>trackId){
 			trackQueue.add(trackId);
+			notifyAll();
 			return true;
 		}else{
 			return false;
