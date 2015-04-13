@@ -2,9 +2,9 @@ package userApplication.connection;
 
 import java.io.OutputStream;
 
-public class NetworkWriterThread extends Thread{
+public class HostToServerWriterThread extends Thread{
 	OutputStream os;
-	public NetworkWriterThread(OutputStream os){
+	public HostToServerWriterThread(OutputStream os){
 		this.os=os;
 	}
 	

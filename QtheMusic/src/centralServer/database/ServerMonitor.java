@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class ServerMonitor {
 	public static final int NO_AVAILABLE_ID = -1;
-	public static final String WRONG_ID = "-1" + System.lineSeparator();
+	public static final String WRONG_ID = "-1";
 	private LinkedList<Integer> availableIDs;
 	private String[] hostAddresses;
 
@@ -73,14 +73,14 @@ public class ServerMonitor {
 		try {
 			int hostId = Integer.parseInt(id);
 			if (hostAddresses[hostId] == null) {
-				return WRONG_ID;
+				return WRONG_ID+System.lineSeparator();
 			} else {
 				String address = hostAddresses[hostId];
 				hostAddresses[hostId] = null;
 				return address + System.lineSeparator();
 			}
 		} catch (NumberFormatException e) {
-			return WRONG_ID;
+			return WRONG_ID+System.lineSeparator();
 		}
 	}
 }
