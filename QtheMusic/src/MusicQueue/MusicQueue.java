@@ -24,11 +24,11 @@ public abstract class MusicQueue {
 	public ArrayList<String> getQueueTracks(){
 		ArrayList<String> tracknameQueue=new ArrayList<String>();
 		for(int i:trackQueue){
-			if(i>=0 && availableTracks.size()>i){
+			try{
 				String trackName=availableTracks.get(i);
 				tracknameQueue.add(trackName);
-			}else{
-				System.out.println("Index out of bounds in MusicQueue.getQueueTracks() at index: "+i);
+			}catch(ArrayIndexOutOfBoundsException e){
+				e.printStackTrace();
 			}
 		}
 		return tracknameQueue;
