@@ -20,7 +20,8 @@ public class ServerMonitor {
 
 	public ServerMonitor(int capacity) {
 		hostAddresses = new String[capacity];
-		availableIDs = new LinkedList<Integer>();
+		hostAddresses[1] = "hejsan johan och denhi:1337";
+		availableIDs = new LinkedList<Integer>(); 
 		for (int i = 0; i < capacity; i++) {
 			availableIDs.add(i);
 		}
@@ -77,7 +78,6 @@ public class ServerMonitor {
 				return WRONG_ID+System.lineSeparator();
 			} else {
 				String address = hostAddresses[hostId];
-				hostAddresses[hostId] = null;
 				return address + System.lineSeparator();
 			}
 		} catch (NumberFormatException e) {

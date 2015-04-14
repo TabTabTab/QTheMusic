@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import userApplication.connection.ClientReadFromServerThread;
-import userApplication.connection.HostToServerWriterThread;
+import userApplication.connection.HostWriteToServerThread;
 import userApplication.monitor.ClientMonitor;
 
 public class UserClient {
@@ -30,7 +30,7 @@ public class UserClient {
 		OutputStream os=serverConnectionSocket.getOutputStream();
 		InputStream is=serverConnectionSocket.getInputStream();
 		ClientReadFromServerThread serverReaderThread=new ClientReadFromServerThread(is, clientMonitor);
-		HostToServerWriterThread serverWriterrThread=new HostToServerWriterThread(os);
+		HostWriteToServerThread serverWriterrThread=new HostWriteToServerThread(os);
 		
 		//TODO start the treads etc. 
 	}
