@@ -7,6 +7,7 @@ public class ServerMonitor {
 	public static final String WRONG_ID = "-1";
 	private LinkedList<Integer> availableIDs;
 	private String[] hostAddresses;
+	private String message;
 
 	/**
 	 * Creates a Central Server Monitor, for handling multithreaded network
@@ -82,5 +83,13 @@ public class ServerMonitor {
 		} catch (NumberFormatException e) {
 			return WRONG_ID+System.lineSeparator();
 		}
+	}
+	
+	public synchronized void setMessage(String msg){
+		message = msg;
+	}
+	
+	public synchronized String getMessage(){
+		return message;
 	}
 }
