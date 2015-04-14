@@ -1,18 +1,20 @@
 package test;
 
-import java.net.ServerSocket;
-import java.net.Socket;
-
 import userApplication.main.UserHost;
+import userApplication.monitor.HostMonitor;
 
 public class UserHostTest {
 
 	public static void main(String[] args) {
+		System.out.println("hello from host");
 //		ServerSocket serverSocket = new ServerSocket(30000);
 //		while (true) {
 //			Socket user = serverSocket.accept();
 //		}
-		UserHost userHost = new UserHost("musik");
+		//TODO: add functionality for letting the user specify the musicfolder
+		String musicFolderPath="musik";
+		UserHost userHost = new UserHost(musicFolderPath);
+		userHost.run();
 		
 	}
 

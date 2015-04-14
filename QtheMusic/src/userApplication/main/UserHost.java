@@ -6,16 +6,28 @@ import java.util.ArrayList;
 import MusicQueue.HostMusicQueue;
 import userApplication.monitor.HostMonitor;
 
-public class UserHost {
+public class UserHost implements Runnable{
 	HostMonitor monitor;
 	HostMusicQueue queue;
-	public UserHost(String folderPath){
+	private String musicFolderPath;
+	public UserHost(String musicFolderPath){
 		monitor = new HostMonitor();
+		this.musicFolderPath=musicFolderPath;
+		//startTheMusicPlayer(folderPath);
+	}
+	public void run() {
+		startTheMusicPlayer(musicFolderPath);
+		// TODO Auto-generated method stub
 		
+	}
+	/**
+	 * Start the music player using music from the specified folderPath
+	 * @param folderPath
+	 */
+	private void startTheMusicPlayer(String folderPath){
 		ArrayList<String> songNames = getMusicFileNames(folderPath);
 		ArrayList<String> temp = getMusicFileNames(folderPath);
 		queue = new HostMusicQueue(temp);
-		
 		queue.addToQueue(0);
 		queue.addToQueue(1);
 		MusicPlayerThread player = new MusicPlayerThread(queue,songNames,folderPath);
@@ -29,7 +41,6 @@ public class UserHost {
 		queue.addToQueue(0);
 		queue.addToQueue(1);
 	}
-	
 	/**
 	 * Creates a list of the music files in the folder and returns it.
 	 * @param folderPath 
