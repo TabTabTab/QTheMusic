@@ -16,7 +16,8 @@ public class UserHost implements Runnable{
 	private String serverIp;
 	private int serverPort;
 	public UserHost(String serverIp,int serverPort,String musicFolderPath){
-		monitor = new HostMonitor();
+		int connectionCapacity=10;
+		monitor = new HostMonitor(connectionCapacity);
 		this.musicFolderPath=musicFolderPath;
 		this.serverIp=serverIp;
 		this.serverPort=serverPort;

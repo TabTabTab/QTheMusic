@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
+import userApplication.main.QueueActionMessage;
 import Protocol.CentralServerProtocol;
 import centralServer.database.ServerMonitor;
 
@@ -15,8 +17,10 @@ public class HostMonitor implements ConnectionMonitor {
 	private int hostId;
 	private String statusMessage;
 	private static final int UNSET_HOST_ID = -1;
-
-	public HostMonitor() {
+	private ArrayList<QueueActionMessage> outbox;
+	private int[] connections;
+	public HostMonitor(int numberOfConnections) {
+		connections=new int[numberOfConnections];
 		hostId = UNSET_HOST_ID;
 		statusMessage = "";
 	}
@@ -25,12 +29,19 @@ public class HostMonitor implements ConnectionMonitor {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	public synchronized String read() throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public synchronized void addAction(QueueActionMessage action){
+		for(int clientId:connections){
+			if(clientId!=0){
+				action.addRecipient(clientId);
+			}
+		}
+		outbox.add(action);
+	}
 	public synchronized String getHostAddress() {
 		// TODO Auto-generated method stub
 		return null;
@@ -52,7 +63,7 @@ public class HostMonitor implements ConnectionMonitor {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	public synchronized void waitForServerConnectionToClose(Socket socket)
 			throws InterruptedException, IOException {
 
