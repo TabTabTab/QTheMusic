@@ -1,5 +1,6 @@
 package centralServer.database;
 
+import java.net.InetSocketAddress;
 import java.util.LinkedList;
 
 public class ServerMonitor {
@@ -36,14 +37,19 @@ public class ServerMonitor {
 	 *         unsuccessful
 	 * 
 	 */
-	public synchronized int registerHost(String address) {
+	public synchronized int registerHost(String hostIp,int hostPort) {
 		if (availableIDs.isEmpty()) {
 			return NO_AVAILABLE_ID;
 		} else {
-			return availableIDs.removeFirst();
+			int hostId=availableIDs.removeFirst();
+			hostAddresses[hostId] = createAddressString(hostIp,hostPort);
+			return hostId;
 		}
 	}
-
+	private String createAddressString(String ip,int port){
+		String addressString=ip+":"+port;
+		return addressString;
+	}
 	/**
 	 * Removes a host connection and makes the ID that host had available again.
 	 * 

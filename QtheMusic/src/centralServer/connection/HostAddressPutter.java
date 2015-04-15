@@ -5,8 +5,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import Protocol.CentralServerProtocol;
 import centralServer.database.InvalidHostIDException;
 import centralServer.database.ServerMonitor;
 
@@ -22,7 +24,7 @@ import centralServer.database.ServerMonitor;
 public class HostAddressPutter extends Thread {
 	private Socket hostClient;
 	private ServerMonitor monitor;
-
+	private static final int INVALID_PORT_NUMBER_FORMAT=-1;
 	public HostAddressPutter(Socket hostClient, ServerMonitor monitor) {
 		this.hostClient = hostClient;
 		this.monitor = monitor;
@@ -35,22 +37,45 @@ public class HostAddressPutter extends Thread {
 					hostClient.getInputStream()));
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 					hostClient.getOutputStream()));
-			String address = br.readLine();
-			id = monitor.registerHost(address);
-			bw.write(id + System.lineSeparator());
-			bw.flush();
-			if (id == ServerMonitor.NO_AVAILABLE_ID) {
-				hostClient.close();
+			String hostIp=hostClient.getInetAddress().getHostAddress();
+			String hostPortResponse= br.readLine();
+			int hostPort= portStringToInt(hostPortResponse);
+			if(hostPort!=INVALID_PORT_NUMBER_FORMAT){
+				id = monitor.registerHost(hostIp,hostPort);
+				writeIntToClient(bw, id);
+				if (id == ServerMonitor.NO_AVAILABLE_ID) {
+					hostClient.close();
+				}
+				while (br.read() != -1);
+			}else{
+				writeIntToClient(bw, CentralServerProtocol.WrongData.INVALID_PORT_NUMBER_FORMAT);
 			}
-			while (br.read() != -1)
-				;
+			hostClient.close();
 		} catch (IOException e) {
-
+			
 		}
 		removeAndCloseConnection(id);
 
 	}
-
+	private void writeIntToClient(BufferedWriter bw,int line) throws IOException{
+		bw.write(line + System.lineSeparator());
+		bw.flush();
+	}
+	/**
+	 * Converts a String port to an int port number if the argument is a valid representation of a port.
+	 * @param stringPort - A string containing the port number as text
+	 * @return The port number as an int if the the argument was valid, otherwise NOT_VALID_PORT.
+	 */
+	private int portStringToInt(String stringPort){
+		try{
+			int port=Integer.parseInt(stringPort.trim());
+			if(port>=0){
+				return port;
+			}
+		}catch(NumberFormatException e){
+		}
+		return INVALID_PORT_NUMBER_FORMAT;
+	}
 	private void removeAndCloseConnection(int id) {
 		if (id != ServerMonitor.NO_AVAILABLE_ID) {
 			try {
