@@ -21,7 +21,7 @@ public class ServerMonitor {
 
 	public ServerMonitor(int capacity) {
 		hostAddresses = new String[capacity];
-		hostAddresses[1] = "hejsan johan och denhi:1337";
+		hostAddresses[0] = "hejsan johan och denhi:1337";
 		availableIDs = new LinkedList<Integer>(); 
 		for (int i = 1; i <= capacity; i++) {
 			availableIDs.add(i);
@@ -31,8 +31,8 @@ public class ServerMonitor {
 	/**
 	 * Registers a user host and gives it an ID is there are any available
 	 * 
-	 * @param address
-	 * 
+	 * @param hostIp
+	 * @param hostPort 
 	 * @return an int representing an id if success or NO_AVAILABLE_ID if
 	 *         unsuccessful
 	 * 
