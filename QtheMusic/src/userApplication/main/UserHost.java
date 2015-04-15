@@ -1,22 +1,40 @@
 package userApplication.main;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import MusicQueue.HostMusicQueue;
+import userApplication.connection.HostIDFetcherThread;
 import userApplication.monitor.HostMonitor;
 
 public class UserHost implements Runnable{
 	HostMonitor monitor;
 	HostMusicQueue queue;
 	private String musicFolderPath;
-	public UserHost(String musicFolderPath){
+	private String serverIp;
+	private int serverPort;
+	public UserHost(String serverIp,int serverPort,String musicFolderPath){
 		monitor = new HostMonitor();
 		this.musicFolderPath=musicFolderPath;
+		this.serverIp=serverIp;
+		this.serverPort=serverPort;
 		//startTheMusicPlayer(folderPath);
 	}
 	public void run() {
-		startTheMusicPlayer(musicFolderPath);
+		try {
+			HostIDFetcherThread fetcher=new HostIDFetcherThread(serverIp, serverPort, monitor);
+			fetcher.run();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//startTheMusicPlayer(musicFolderPath);
 		// TODO Auto-generated method stub
 		
 	}

@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import Protocol.DebugConstants;
 import userApplication.monitor.HostMonitor;
 
 /**
@@ -23,33 +24,35 @@ public class HostIDFetcherThread extends Thread {
 	private HostMonitor hostMonitor;
 	private Socket socket;
 
-	public HostIDFetcherThread(String address, int port, HostMonitor hostMonitor)
+	public HostIDFetcherThread(String serverIP, int serverPort, HostMonitor hostMonitor)
 			throws UnknownHostException, IOException {
-		this.socket = new Socket(address, port);
+		this.socket = new Socket(serverIP, serverPort);
 		this.hostMonitor = hostMonitor;
-
 	}
-
+	
 	public void run() {
 		boolean setUp = false;
 		try {
-			while (!setUp) {
-				BufferedReader input = new BufferedReader(
-						new InputStreamReader(socket.getInputStream()));
-				BufferedWriter output = new BufferedWriter(
-						new OutputStreamWriter(socket.getOutputStream()));
-				String hostAddress = hostMonitor.getHostAddress();
-				output.write(hostAddress + System.lineSeparator());
-				String id = input.readLine();
-				// TODO: Handle no available id in monitor!
-				setUp = hostMonitor.setID(id);
+			BufferedReader input = new BufferedReader(
+					new InputStreamReader(socket.getInputStream()));
+			BufferedWriter output = new BufferedWriter(
+					new OutputStreamWriter(socket.getOutputStream()));
+			int hostPort=DebugConstants.HOST_PORT;
+			output.write(hostPort + System.lineSeparator());
+			output.flush();
+			System.out.println("waiting for id response from server");
+			String idResponse = input.readLine();
+			System.out.println("Host got id response: '"+idResponse+"'");
+			// TODO: Handle no available id in monitor!
+			int id=Integer.parseInt(idResponse);
+			setUp = hostMonitor.setID(id);
+			if(setUp){
+				hostMonitor.waitForServerConnectionToClose(socket);
 			}
-			hostMonitor.closeConnectionToServer(socket);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 		} catch (InterruptedException e) {
 		}
-
+		hostMonitor.setCentralServerAliveStatus(false);
 	}
-
 }

@@ -1,5 +1,6 @@
 package test;
 
+import Protocol.DebugConstants;
 import userApplication.main.UserHost;
 import userApplication.monitor.HostMonitor;
 
@@ -13,9 +14,8 @@ public class UserHostTest {
 //		}
 		//TODO: add functionality for letting the user specify the musicfolder
 		String musicFolderPath="musik";
-		UserHost userHost = new UserHost(musicFolderPath);
+		UserHost userHost = new UserHost("localhost",DebugConstants.SERVER_HOST_PORT,musicFolderPath);
 		userHost.run();
-		
 	}
 
 }

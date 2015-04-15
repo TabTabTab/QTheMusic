@@ -23,7 +23,7 @@ public class ServerMonitor {
 		hostAddresses = new String[capacity];
 		hostAddresses[1] = "hejsan johan och denhi:1337";
 		availableIDs = new LinkedList<Integer>(); 
-		for (int i = 0; i < capacity; i++) {
+		for (int i = 1; i <= capacity; i++) {
 			availableIDs.add(i);
 		}
 	}
@@ -42,7 +42,7 @@ public class ServerMonitor {
 			return NO_AVAILABLE_ID;
 		} else {
 			int hostId=availableIDs.removeFirst();
-			hostAddresses[hostId] = createAddressString(hostIp,hostPort);
+			hostAddresses[hostId-1] = createAddressString(hostIp,hostPort);
 			return hostId;
 		}
 	}
@@ -80,10 +80,10 @@ public class ServerMonitor {
 	public synchronized String getHostAddress(String id) {
 		try {
 			int hostId = Integer.parseInt(id);
-			if (hostAddresses[hostId] == null) {
+			if (hostAddresses[hostId-1] == null) {
 				return WRONG_ID+System.lineSeparator();
 			} else {
-				String address = hostAddresses[hostId];
+				String address = hostAddresses[hostId-1];
 				return address + System.lineSeparator();
 			}
 		} catch (NumberFormatException e) {

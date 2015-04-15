@@ -39,6 +39,7 @@ public class HostAddressPutter extends Thread {
 					hostClient.getOutputStream()));
 			String hostIp=hostClient.getInetAddress().getHostAddress();
 			String hostPortResponse= br.readLine();
+			System.out.println("we got this from the host: '"+hostPortResponse+"'");
 			int hostPort= portStringToInt(hostPortResponse);
 			if(hostPort!=INVALID_PORT_NUMBER_FORMAT){
 				id = monitor.registerHost(hostIp,hostPort);
@@ -54,10 +55,12 @@ public class HostAddressPutter extends Thread {
 		} catch (IOException e) {
 			
 		}
+		System.out.println("done");
 		removeAndCloseConnection(id);
 
 	}
 	private void writeIntToClient(BufferedWriter bw,int line) throws IOException{
+		System.out.println("writing: '"+line+"' to host");
 		bw.write(line + System.lineSeparator());
 		bw.flush();
 	}
