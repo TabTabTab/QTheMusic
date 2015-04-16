@@ -33,4 +33,10 @@ public class QueueActionMessage {
 	public ArrayList<Integer> getRecipients(){
 		return recipients;
 	}
+	public void removeRecipient(int recipientId){
+		recipients.remove(recipientId);
+	}
+	public boolean hasNoRecipients(){
+		return recipients.isEmpty();
+	}
 }
