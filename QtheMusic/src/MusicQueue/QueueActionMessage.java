@@ -1,7 +1,13 @@
-package userApplication.main;
+package MusicQueue;
 
 import java.util.ArrayList;
 
+/**
+ * A class representing an action to be taken upon a track in the queue.
+ * The recipients which queues has to be updated according to this action is also available.
+ * @author Johan
+ *
+ */
 public class QueueActionMessage {
 	public static enum Action {
 		REMOVE_TRACK, ADD_TRACK

@@ -14,5 +14,5 @@ public class ClientMusicQueue extends MusicQueue{
 	public void replaceQueue(ArrayList<Integer> newQueue){
 		trackQueue=newQueue;
 	}
-
+	
 }

@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import MusicQueue.HostMusicQueue;
+import Protocol.DebugConstants;
 import userApplication.connection.HostIDFetcherThread;
 import userApplication.monitor.HostMonitor;
 
@@ -16,8 +17,7 @@ public class UserHost implements Runnable{
 	private String serverIp;
 	private int serverPort;
 	public UserHost(String serverIp,int serverPort,String musicFolderPath){
-		int connectionCapacity=10;
-		monitor = new HostMonitor(connectionCapacity);
+		monitor = new HostMonitor(DebugConstants.MAX_NBR_OF_CLIENTS_ALLOWED_BY_HOST);
 		this.musicFolderPath=musicFolderPath;
 		this.serverIp=serverIp;
 		this.serverPort=serverPort;

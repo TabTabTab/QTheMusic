@@ -14,18 +14,7 @@ public class HostMusicQueue extends MusicQueue {
 	public HostMusicQueue(ArrayList<String> availableTracks){
 		super(availableTracks);
 	}
-	/**
-	 * Removes a track in the queue at the specified position
-	 * @param queueIndex - the specified queue position of the track to be removed 
-	 * @return true if the track was successfully removed, otherwise false
-	 */
-	public synchronized boolean removeAtIndex(int queueIndex){
-		if(queueIndex>=0 && trackQueue.size()>queueIndex){
-			trackQueue.remove(queueIndex);
-			return true;
-		}
-		return false;
-	}
+	
 	/**
 	 * Removes the first track in the queue
 	 * @return true if the track was successfully removed, otherwise false

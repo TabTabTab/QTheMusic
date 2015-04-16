@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import userApplication.main.QueueActionMessage;
+import MusicQueue.QueueActionMessage;
 import Protocol.CentralServerProtocol;
 import centralServer.database.ServerMonitor;
 
