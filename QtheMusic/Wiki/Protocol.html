@@ -7,16 +7,18 @@
 
 <h1>The data transfers happening between the three entities</h1>
 
-<PRE>
 
-Packages sent between the UserHost and the CentralServer:
+
+<h2>Packages sent between the UserHost and the CentralServer</h2>
+
+<PRE>
 
 |----------------|
 |                |
 |   UserHost     |
 |                |
 |                |
-|                |     set up host request (contains: an address and possibly a list of available songs )
+|                |     set up host request (contains: a port )
 |----------------|  . . . . . . . . . . . . .>           
 					   the set up response ((if success)contains: a host ID)
                     < . . . . . . . . . . .  |----------------|
@@ -29,10 +31,10 @@ Packages sent between the UserHost and the CentralServer:
                                              |                |
                                              |----------------|
                                              
-====================================================================================================                                
-                                             
-Packages sent between the UserClient and the CentralServer:                                           
-                                             
+</PRE>
+                                            
+<h2>Packages sent between the UserClient and the CentralServer</h2>                                        
+<PRE>
                                              |----------------|
                                              |                |
                                              | CentralServer  |
@@ -45,8 +47,7 @@ Packages sent between the UserClient and the CentralServer:
                        get host info(contains: a hostID)
                        . . . . . . . . . . . . .>
                        
-                       the set up response (if success:contains an address to the host and possibly a list
-                        of available songs)
+                       the set up response (if success:contains a socket address to the host )
                     < . . . . . . . . . . .
 |----------------|
 |                |
@@ -55,13 +56,12 @@ Packages sent between the UserClient and the CentralServer:
 |                |
 |                |
 |----------------|
+</PRE>
 
 
-===================================================================================================
+<h2>Packages sent between the UserClient and the UserHost</h2>                                    
 
-
-Packages sent between the UserClient and the UserHost:                                           
-                                             
+<PRE>
                                              |----------------|
                                              |                |
                                              | UserHost       |
@@ -78,10 +78,8 @@ Packages sent between the UserClient and the UserHost:
                      queue this song(contains: a trackId ..)
                      . . . . . . . . . . . > 
                      
-                     
-                     get the queue request()
-                     . . . . . . . . . . . . . . . >
-                     the current queue(contains: a track queue)
+                     an action (contains: an event that happened to the queue
+                     			e.g. "track with id 4 added to queue" or "track at queue index 0 removed")
                     < . . . . . . . . . . .
 |----------------|
 |                |
@@ -90,13 +88,6 @@ Packages sent between the UserClient and the UserHost:
 |                |
 |                |
 |----------------|
-
-
-
-
-==================================================================================================
-
-
 
 </PRE>
 
