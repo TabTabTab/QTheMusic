@@ -80,8 +80,9 @@ public class HostMonitor implements ConnectionMonitor {
 		notifyAll();
 	}
 
-	public synchronized void addNewClient(OutputStream outputStream) {
+	public synchronized int addNewClient(OutputStream outputStream) {
 		// TODO Auto-generated method stub
+		return 0;
 
 	}
 
@@ -93,5 +94,16 @@ public class HostMonitor implements ConnectionMonitor {
 		// ServerSocket).
 		return null;
 	}
+
+	public synchronized SenderData getSendData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public synchronized void processRequest(String line, int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
