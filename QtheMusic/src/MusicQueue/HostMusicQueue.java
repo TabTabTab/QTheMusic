@@ -3,7 +3,8 @@ package MusicQueue;
 import java.util.ArrayList;
 
 public class HostMusicQueue extends MusicQueue {
-	String folderPath;
+	private String folderPath;
+	private boolean songIsPlaying = false;
 	/**
 	 * Creates a new Host MusiqQueue
 	 * @param availableTracks a list with the names of available tracks,
@@ -66,6 +67,26 @@ public class HostMusicQueue extends MusicQueue {
 			return true;
 		}else{
 			return false;
+		}
+	}
+	
+	public synchronized void startingSong(){
+		songIsPlaying = true;
+	}
+	public synchronized void finishedSong(){
+		songIsPlaying = false;
+		notifyAll();
+	}
+	/**
+	 * method for the music playing thread to wait for the song to finish
+	 */
+	public synchronized void waitForFinishedSong(){
+		while(songIsPlaying){
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

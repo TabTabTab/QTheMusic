@@ -35,7 +35,7 @@ public class UserHost implements Runnable{
 			e.printStackTrace();
 		}
 		
-		//startTheMusicPlayer(musicFolderPath);
+		startTheMusicPlayer(musicFolderPath);
 		// TODO Auto-generated method stub
 		
 	}
@@ -48,17 +48,17 @@ public class UserHost implements Runnable{
 		ArrayList<String> temp = getMusicFileNames(folderPath);
 		queue = new HostMusicQueue(temp);
 		queue.addToQueue(0);
-		queue.addToQueue(1);
+		queue.addToQueue(0);
 		MusicPlayerThread player = new MusicPlayerThread(queue,songNames,folderPath);
 		player.start();
 		try {
-			Thread.sleep(1000*60*10);
+			Thread.sleep(30*1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		queue.addToQueue(0);
-		queue.addToQueue(1);
+		queue.addToQueue(0);
 	}
 	/**
 	 * Creates a list of the music files in the folder and returns it.
