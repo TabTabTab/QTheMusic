@@ -17,7 +17,7 @@ public class HostMonitor implements ConnectionMonitor {
 	private int hostId;
 	private String statusMessage;
 	private static final int UNSET_HOST_ID = -1;
-	private ArrayList<QueueActionMessage> outbox;
+	private ArrayList<QueueActionMessage> outBox;
 	private int[] connections;
 	public HostMonitor(int numberOfConnections) {
 		connections=new int[numberOfConnections];
@@ -30,6 +30,40 @@ public class HostMonitor implements ConnectionMonitor {
 
 	}
 	
+	/*
+	 * This method will initially be called from the "readFromClient" 
+	 * thread when an ended connecition is detected.
+	 */
+	public synchronized void removeClient(int clientId){
+		//TODO:
+		/*			 * 
+		 * 1:	Make sure the clientId does not appear in any
+		 * 		outBox message. (as the id is now useless)
+		 * 
+		 * 2:	Remove the clientId from the connections list
+		 * 
+		 * 3:	Make sure to add a message to the clientWriterThread that the id is now removed.
+		 * 		(A add/remove connection message queue needs to be implemented)
+		 */
+	}
+	/**
+	 * Registers a client
+	 * @return the clientId, or -1 if the method failed
+	 */
+	public synchronized int addClient(){
+		//TODO:
+		/*
+		 * 1:	Find an available clientId(if available, otherwise return -1)
+		 * 
+		 * 2:	Loop through the musicQueue and for every track, create an QueueActionMessage
+		 * 		with the single recipient: clientId.
+		 * 
+		 * 3:	Make sure to add a message to the clientWriterThread that the id is now added.
+		 * 		(A add/remove connection message queue needs to be implemented)	
+		 */
+		return -1;
+	}
+	
 	public synchronized String read() throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
@@ -40,7 +74,7 @@ public class HostMonitor implements ConnectionMonitor {
 				action.addRecipient(clientId);
 			}
 		}
-		outbox.add(action);
+		outBox.add(action);
 	}
 	public synchronized String getHostAddress() {
 		// TODO Auto-generated method stub
