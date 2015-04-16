@@ -18,9 +18,9 @@
 |   UserHost     |
 |                |
 |                |
-|                |     set up host request (contains: a port )
+|                |     P1. set up host request (contains: a port )
 |----------------|  . . . . . . . . . . . . .>           
-					   the set up response ((if success)contains: a host ID)
+					   P2. the set up response ((if success)contains: a host ID)
                     < . . . . . . . . . . .  |----------------|
                                              |                |
                                              | CentralServer  |
@@ -32,8 +32,20 @@
                                              |----------------|
                                              
 </PRE>
+
+<h3>Packages<h3>
+	<h4>P1</h4>
+		A line containing a number.
+
+	<h4>P2</h4>
+		A line containing a number.</br>
+		-1 if server was full, otherwise a number larger than 0.
+
+
                                             
-<h2>Packages sent between the UserClient and the CentralServer</h2>                                        
+<h2>Packages sent between the UserClient and the CentralServer</h2>         
+
+                           
 <PRE>
                                              |----------------|
                                              |                |
@@ -44,10 +56,10 @@
                                              |                |
                                              |                |
                                              |----------------|
-                       get host info(contains: a hostID)
+                       P1. get host info(contains: a hostID)
                        . . . . . . . . . . . . .>
                        
-                       the set up response (if success:contains a socket address to the host )
+                       P2. the set up response (if success:contains a socket address to the host )
                     < . . . . . . . . . . .
 |----------------|
 |                |
@@ -57,6 +69,15 @@
 |                |
 |----------------|
 </PRE>
+
+	<h3>Packages<h3>
+		<h4>P1</h4>
+			A line containing a number.
+
+		<h4>P2</h4>
+			A line containing a colon separated ip string and port number.</br>
+			-1 if the requested hostId did not exist.
+
 
 
 <h2>Packages sent between the UserClient and the UserHost</h2>                                    
@@ -71,14 +92,11 @@
                                              |                |
                                              |                |
                                              |----------------|
-                       set up connection()
-                       . . . . . . . . . . . . .>
                        
-                       
-                     queue this song(contains: a trackId ..)
+                     P1. queue this song(contains: a trackId ..)
                      . . . . . . . . . . . > 
                      
-                     an action (contains: an event that happened to the queue
+                     P2. an action (contains: an event that happened to the queue
                      			e.g. "track with id 4 added to queue" or "track at queue index 0 removed")
                     < . . . . . . . . . . .
 |----------------|
@@ -91,6 +109,13 @@
 
 </PRE>
 
+	<h3>Packages<h3>
+		<h4>P1</h4>
+			A line containing a number larger than or equal to 0.
+		<h4>P2</h4>
+			A line containing two colon separated numbers.</br>
+			The first number is an enum according to the action (add/remove) the second is the queue index</br>
+			of the track to be removed.
 
 </body>
 </html>
