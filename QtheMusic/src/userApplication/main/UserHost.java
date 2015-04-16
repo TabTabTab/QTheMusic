@@ -65,7 +65,7 @@ public class UserHost implements Runnable{
 	 * @param folderPath 
 	 * @return
 	 */
-	ArrayList<String> getMusicFileNames(String folderPath){
+	private ArrayList<String> getMusicFileNames(String folderPath){
 		ArrayList<String> musicFileNames = new ArrayList<String>();
 		File folder = new File(folderPath);
 		String musicFilename;

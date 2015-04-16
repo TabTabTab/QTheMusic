@@ -53,7 +53,7 @@ public class MusicPlayerThread extends Thread{
 				AudioFormat format;
 				DataLine.Info info;
 				Clip clip;
-				stream = AudioSystem.getAudioInputStream(musicFile);		   
+				stream = AudioSystem.getAudioInputStream(musicFile);	
 				format = stream.getFormat();
 				info = new DataLine.Info(Clip.class, format);
 				clip = (Clip) AudioSystem.getLine(info);

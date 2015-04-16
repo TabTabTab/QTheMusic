@@ -19,8 +19,11 @@ public class HostMonitor implements ConnectionMonitor {
 	private static final int UNSET_HOST_ID = -1;
 	private ArrayList<QueueActionMessage> outBox;
 	private int[] connections;
-	public HostMonitor(int numberOfConnections) {
-		connections=new int[numberOfConnections];
+	private int numberOfAllowedClients;
+	private int numberOfConnectedClients = 0;
+	public HostMonitor(int numberOfAllowedClients) {
+		this.numberOfAllowedClients=numberOfAllowedClients;
+		connections=new int[numberOfAllowedClients];
 		hostId = UNSET_HOST_ID;
 		statusMessage = "";
 	}
@@ -29,7 +32,7 @@ public class HostMonitor implements ConnectionMonitor {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	/*
 	 * This method will initially be called from the "readFromClient" 
 	 * thread when an ended connecition is detected.
@@ -44,6 +47,8 @@ public class HostMonitor implements ConnectionMonitor {
 		 * 
 		 * 3:	Make sure to add a message to the clientWriterThread that the id is now removed.
 		 * 		(A add/remove connection message queue needs to be implemented)
+		 * 
+		 * 4:	Decrement numberOfConnectedClients
 		 */
 	}
 	/**
@@ -60,10 +65,12 @@ public class HostMonitor implements ConnectionMonitor {
 		 * 
 		 * 3:	Make sure to add a message to the clientWriterThread that the id is now added.
 		 * 		(A add/remove connection message queue needs to be implemented)	
+		 * 
+		 * 4:	Increment numberOfConnectedClients
 		 */
 		return -1;
 	}
-	
+
 	public synchronized String read() throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
@@ -87,7 +94,7 @@ public class HostMonitor implements ConnectionMonitor {
 			statusMessage = "No ID is currently available";
 		} else if (hostId == CentralServerProtocol.WrongData.INVALID_PORT_NUMBER_FORMAT) {
 			System.err
-					.println("Invalid port number format message received from centralserver during setup");
+			.println("Invalid port number format message received from centralserver during setup");
 			hostId = UNSET_HOST_ID;
 		} else {
 			this.hostId = hostId;
@@ -97,7 +104,7 @@ public class HostMonitor implements ConnectionMonitor {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public synchronized void waitForServerConnectionToClose(Socket socket)
 			throws InterruptedException, IOException {
 
@@ -120,13 +127,29 @@ public class HostMonitor implements ConnectionMonitor {
 
 	}
 
-	public synchronized ServerSocket blockConnectionUntilAvailable(
-			ServerSocket server) {
+	public synchronized ServerSocket blockConnectionUntilAvailable (ServerSocket server) {
 		int portNbr = server.getLocalPort();
-		// TODO block until client spots are available in the monitor. When
-		// blocking close the server, reopen the server before returning (new
-		// ServerSocket).
-		return null;
+		if(numberOfConnectedClients==numberOfAllowedClients){
+			try {
+				server.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		while(numberOfConnectedClients==numberOfAllowedClients){
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			server = new ServerSocket(portNbr);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return server;
 	}
 
 	public synchronized SenderData getSendData() {
@@ -136,7 +159,7 @@ public class HostMonitor implements ConnectionMonitor {
 
 	public synchronized void processRequest(String line, int id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
