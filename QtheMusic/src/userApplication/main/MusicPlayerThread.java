@@ -1,31 +1,14 @@
 package userApplication.main;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineEvent.Type;
-import javax.sound.sampled.LineListener;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
-
 //import sun.audio.AudioPlayer;
 //import sun.audio.AudioStream;
-
-
-
-
 import MusicQueue.HostMusicQueue;
 
 public class MusicPlayerThread extends Thread{
