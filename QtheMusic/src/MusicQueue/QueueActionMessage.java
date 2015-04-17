@@ -9,9 +9,7 @@ import java.util.ArrayList;
  *
  */
 public class QueueActionMessage {
-	public static enum Action {
-		REMOVE_TRACK, ADD_TRACK
-	}
+	
 	private Action action;
 	private int trackIndex;
 	private ArrayList<Integer> recipients;

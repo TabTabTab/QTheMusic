@@ -23,6 +23,5 @@ Host should be able to control the music player.
 An Administrator Client should be created (next, pause etc).
 
 Implement a pause function for the player.
- 
 
  

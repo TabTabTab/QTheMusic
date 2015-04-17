@@ -16,12 +16,12 @@ import userApplication.monitor.HostMonitor;
  * @author Shan
  * 
  */
-public class NewClientListenerThread extends Thread {
+public class IncomingClientListenerThread extends Thread {
 
 	private ServerSocket server;
 	private HostMonitor hostMonitor;
 
-	public NewClientListenerThread(HostMonitor hostMonitor, int portNbr)
+	public IncomingClientListenerThread(HostMonitor hostMonitor, int portNbr)
 			throws IOException {
 		this.server = new ServerSocket(portNbr);
 		this.hostMonitor = hostMonitor;
