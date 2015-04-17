@@ -33,10 +33,8 @@ public class HostIDFetcherThread extends Thread {
 	public void run() {
 		boolean setUp = false;
 		try {
-			BufferedReader input = new BufferedReader(
-					new InputStreamReader(socket.getInputStream()));
-			BufferedWriter output = new BufferedWriter(
-					new OutputStreamWriter(socket.getOutputStream()));
+			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			BufferedWriter output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			int hostPort=DebugConstants.HOST_PORT;
 			output.write(hostPort + System.lineSeparator());
 			output.flush();

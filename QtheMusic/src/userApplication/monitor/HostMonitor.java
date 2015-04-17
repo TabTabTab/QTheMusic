@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import MusicQueue.HostMusicQueue;
 import MusicQueue.QueueActionMessage;
 import Protocol.CentralServerProtocol;
 import centralServer.database.ServerMonitor;
@@ -18,14 +19,23 @@ public class HostMonitor implements ConnectionMonitor {
 	private String statusMessage;
 	private static final int UNSET_HOST_ID = -1;
 	private ArrayList<QueueActionMessage> outBox;
+	
+	//0 betyder ledigt, 1 upptaget eller hur är tanken?
 	private int[] connections;
+	private OutputStream[] connectionStreams;
 	private int numberOfAllowedClients;
 	private int numberOfConnectedClients = 0;
+	private HostMusicQueue songQueue;
+	
 	public HostMonitor(int numberOfAllowedClients) {
 		this.numberOfAllowedClients=numberOfAllowedClients;
 		connections=new int[numberOfAllowedClients];
+		connectionStreams = new OutputStream[numberOfAllowedClients];
 		hostId = UNSET_HOST_ID;
 		statusMessage = "";
+	}
+	public synchronized void setMusicQueue(HostMusicQueue songQueue){
+		this.songQueue=songQueue;
 	}
 
 	public synchronized void write(String data) {
@@ -70,16 +80,39 @@ public class HostMonitor implements ConnectionMonitor {
 		 */
 		return -1;
 	}
+	
+	//vilken av dessa ska användas?
+	//bygger upp en minimal variant för att se om jag kan skapa ett väldigt simpelt system med köande av låtar.
+	public synchronized int addNewClient(OutputStream outputStream) {
+		int id=-1;
+		for(int i=0;i<numberOfAllowedClients;i++){
+			if(connections[i]==0){
+				connections[i]=1;
+				id=i;
+				break;
+			}
+		}
+		if(id==-1){
+			return id;
+		}
+		connectionStreams[id]=outputStream;
+		numberOfConnectedClients++;
+		return id;
 
+	}
+	
+	
 	public synchronized String read() throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	public synchronized void addAction(QueueActionMessage action){
+		int index = 0;
 		for(int clientId:connections){
 			if(clientId!=0){
-				action.addRecipient(clientId);
+				action.addRecipient(index);
 			}
+			index++;
 		}
 		outBox.add(action);
 	}
@@ -121,33 +154,39 @@ public class HostMonitor implements ConnectionMonitor {
 		notifyAll();
 	}
 
-	public synchronized int addNewClient(OutputStream outputStream) {
-		// TODO Auto-generated method stub
-		return 0;
-
-	}
 
 	public synchronized ServerSocket blockConnectionUntilAvailable (ServerSocket server) {
 		int portNbr = server.getLocalPort();
-		if(numberOfConnectedClients==numberOfAllowedClients){
-			try {
-				server.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		//if(numberOfConnectedClients==numberOfAllowedClients){
+		//		try {
+		//			server.close();
+		//		} catch (IOException e) {
+		//			e.printStackTrace();
+		//		}
+		//}
+		boolean closedServer = false;
 		while(numberOfConnectedClients==numberOfAllowedClients){
+			if(!closedServer){
+				try {
+					server.close();
+					closedServer=true;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			try {
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		try {
-			server = new ServerSocket(portNbr);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(closedServer){
+			try {
+				server = new ServerSocket(portNbr);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return server;
 	}
@@ -158,8 +197,38 @@ public class HostMonitor implements ConnectionMonitor {
 	}
 
 	public synchronized void processRequest(String line, int id) {
-		// TODO Auto-generated method stub
+		System.out.println("Got a request from a client: '"+line+"'");
+		String[] splittedLine=line.split(" ");
+		String command = splittedLine[0];
+		switch (command) {
+			case "Q":
+				songQueue.addToQueue(Integer.parseInt(splittedLine[1]));
+				break;
+			default:
+				System.out.println("unkown command");
+				return;
+		}
 
+	}
+
+	public synchronized void sendData() {
+		//metod som låser HostToCLientWriter tråden och skickar data till de klienter som ska ha det, dvs HostToCIlentWriter tråden snurrar bara i denna metoden hela tiden
+		
+		
+//		SenderData data = hostMonitor.getSendData();
+//		for (OutputStream os : data.destinations) {
+//			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+//					os));
+//			try {
+//				bw.write(data.message + System.lineSeparator());
+//				bw.flush();
+//			} catch (IOException e) {
+//				// TODO Handle not being able to write to outputstream in monitor or
+//				// elsewhere
+//			}
+//		}
+//	}
+		
 	}
 
 

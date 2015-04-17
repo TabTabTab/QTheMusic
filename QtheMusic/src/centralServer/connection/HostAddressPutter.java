@@ -33,10 +33,8 @@ public class HostAddressPutter extends Thread {
 	public void run() {
 		int id = ServerMonitor.NO_AVAILABLE_ID;
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					hostClient.getInputStream()));
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-					hostClient.getOutputStream()));
+			BufferedReader br = new BufferedReader(new InputStreamReader(hostClient.getInputStream()));
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(hostClient.getOutputStream()));
 			String hostIp=hostClient.getInetAddress().getHostAddress();
 			String hostPortResponse= br.readLine();
 			System.out.println("we got this from the host: '"+hostPortResponse+"'");

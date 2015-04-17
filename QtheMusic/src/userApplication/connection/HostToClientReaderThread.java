@@ -27,8 +27,7 @@ public class HostToClientReaderThread extends Thread {
 	public void run() {
 		BufferedReader reader;
 		try {
-			reader = new BufferedReader(new InputStreamReader(
-					client.getInputStream()));
+			reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			while (!isInterrupted()) {
 				String line = reader.readLine();
 				hostMonitor.processRequest(line, id);

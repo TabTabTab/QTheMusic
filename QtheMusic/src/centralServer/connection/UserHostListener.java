@@ -28,8 +28,8 @@ public class UserHostListener extends Thread {
 			ServerSocket server = new ServerSocket(portNbr);
 			while (!isInterrupted()) {
 				try {
-					Socket userClient = server.accept();
-					Thread thread = new HostAddressPutter(userClient, monitor);
+					Socket userHost = server.accept();
+					Thread thread = new HostAddressPutter(userHost, monitor);
 					thread.start();
 				} catch (IOException e) {
 

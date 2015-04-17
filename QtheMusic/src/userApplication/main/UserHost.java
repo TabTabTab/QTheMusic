@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import MusicQueue.HostMusicQueue;
 import Protocol.DebugConstants;
 import userApplication.connection.HostIDFetcherThread;
+import userApplication.connection.NewClientListenerThread;
 import userApplication.monitor.HostMonitor;
 
 public class UserHost implements Runnable{
@@ -26,7 +27,7 @@ public class UserHost implements Runnable{
 	public void run() {
 		try {
 			HostIDFetcherThread fetcher=new HostIDFetcherThread(serverIp, serverPort, monitor);
-			fetcher.run();
+			fetcher.start();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,7 +37,12 @@ public class UserHost implements Runnable{
 		}
 		
 		startTheMusicPlayer(musicFolderPath);
-		// TODO Auto-generated method stub
+		try {
+			NewClientListenerThread clientListener = new NewClientListenerThread(monitor,DebugConstants.HOST_PORT);
+			clientListener.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	/**
@@ -47,18 +53,9 @@ public class UserHost implements Runnable{
 		ArrayList<String> songNames = getMusicFileNames(folderPath);
 		ArrayList<String> temp = getMusicFileNames(folderPath);
 		queue = new HostMusicQueue(temp);
-		queue.addToQueue(0);
-		queue.addToQueue(0);
+		monitor.setMusicQueue(queue);
 		MusicPlayerThread player = new MusicPlayerThread(queue,songNames,folderPath);
 		player.start();
-		try {
-			Thread.sleep(30*1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		queue.addToQueue(0);
-		queue.addToQueue(0);
 	}
 	/**
 	 * Creates a list of the music files in the folder and returns it.

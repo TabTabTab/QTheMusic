@@ -26,19 +26,21 @@ public class HostToClientWriterThread extends Thread {
 	public void run() {
 
 		while (!isInterrupted()) {
-			SenderData data = hostMonitor.getSendData();
-			for (OutputStream os : data.destinations) {
-				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-						os));
-				try {
-					bw.write(data.message + System.lineSeparator());
-					bw.flush();
-				} catch (IOException e) {
-					// TODO Handle not being able to write to outputstream in monitor or
-					// elsewhere
-				}
-			}
+			hostMonitor.sendData();
 		}
+//			SenderData data = hostMonitor.getSendData();
+//			for (OutputStream os : data.destinations) {
+//				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+//						os));
+//				try {
+//					bw.write(data.message + System.lineSeparator());
+//					bw.flush();
+//				} catch (IOException e) {
+//					// TODO Handle not being able to write to outputstream in monitor or
+//					// elsewhere
+//				}
+//			}
+//		}
 	}
 
 }

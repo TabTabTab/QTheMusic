@@ -12,15 +12,15 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class HostAddressRetriever {
-	private String serverIp;
-	private int serverPort;
-	public HostAddressRetriever(String serverIp,int serverPort){
-		this.serverIp=serverIp;
-		this.serverPort=serverPort;
+	private String centralServerIp;
+	private int centralServerPort;
+	public HostAddressRetriever(String centralServerIp,int centralServerPort){
+		this.centralServerIp=centralServerIp;
+		this.centralServerPort=centralServerPort;
 	}
 	public InetSocketAddress retreiveHostAddress(int hostId) throws UnknownHostException, IOException, InvalidResponseException{
 
-		Socket serverConnectionSocket=new Socket(serverIp,serverPort);
+		Socket serverConnectionSocket=new Socket(centralServerIp,centralServerPort);
 		OutputStream os=serverConnectionSocket.getOutputStream();
 		InputStream is=serverConnectionSocket.getInputStream();
 		makeHostAddressRequest(os,hostId);
