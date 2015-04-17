@@ -68,7 +68,7 @@ public class UserHost implements Runnable{
 		String musicFilename;
 		for(File file : folder.listFiles()){
 			musicFilename=file.getName();
-			if(musicFilename.endsWith(".wav")){
+			if(musicFilename.endsWith(".mp3")){
 				musicFileNames.add(musicFilename);
 			}
 		}
