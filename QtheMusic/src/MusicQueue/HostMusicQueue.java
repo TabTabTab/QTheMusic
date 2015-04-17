@@ -38,7 +38,6 @@ public class HostMusicQueue extends MusicQueue {
 				e.printStackTrace();
 			}
 		}
-		
 		return trackQueue.remove(0);
 	}
 	
