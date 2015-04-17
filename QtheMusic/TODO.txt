@@ -6,7 +6,7 @@ ALWAYS ACTIVE: Correct all variable names etc. Host, Client and CentralServer sh
 
 Host should be able to send all available tracks to the client.
 
-Host should be able to sent queue ADD/queue REMOVE to Client. (No index yet).
+Host should be able to send (queue ADD)/(queue REMOVE) to Client. (No index yet).
 
 Define client-host protocol.
 
