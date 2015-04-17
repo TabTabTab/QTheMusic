@@ -52,7 +52,14 @@
                        P1. get host info(contains: a hostID)
                        . . . . . . . . . . . . .>
                        
-                       P2. the set up response (if success:contains a socket address to the host )
+                       P2. The nbr of available tracks (contains: nbrOfTracks)
+                       		The client will now wait for nbrOfTracks P3 messages
+                    < . . . . . . . . . . .
+                    
+                    P3. The available track (contains: a track name)
+                    < . . . . . . . . . . .
+                       
+                       P4. the set up response (if success:contains a socket address to the host )
                     < . . . . . . . . . . .
 |----------------|
 |                |
@@ -62,11 +69,18 @@
 |----------------|
 </PRE>
 
-	<h3>Packages<h3>
+	<h3>Packages</h3>
 		<h4>P1</h4>
 			A line containing a number.
-
+		
 		<h4>P2</h4>
+			A line containing a number
+		
+		<h4>P3</h4>
+			A line containing a string.
+		
+		
+		<h4>P4</h4>
 			A line containing a colon separated ip string and port number.</br>
 			-1 if the requested hostId did not exist.
 
