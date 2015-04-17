@@ -6,10 +6,11 @@ ALWAYS ACTIVE: Correct all variable names etc. Host, Client and CentralServer sh
 1. Host should be able to send all available tracks to the client.
 2. Host should be able to sent queue ADD/queue REMOVE to Client. (No index yet).
 3. Define client-host protocol.
-4. HTTP research.
-5. Add MusicPlayer functionality (stop, "next", play).
-5. MusicPlayer support multiple file formats.
-5. Host should be able to control the music player.
-6. An Administrator Client should be created (next, pause etc).
+4. Error checking everywhere!
+5. HTTP research.
+6. Add MusicPlayer functionality (stop, "next", play).
+7. MusicPlayer support multiple file formats.
+8. Host should be able to control the music player.
+9. An Administrator Client should be created (next, pause etc).
  
  
