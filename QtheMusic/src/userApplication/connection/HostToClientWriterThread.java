@@ -1,12 +1,8 @@
 package userApplication.connection;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 import userApplication.monitor.HostMonitor;
-import userApplication.monitor.SenderData;
 
 /**
  * This thread gets all the message and the destinations for said message from
@@ -26,21 +22,16 @@ public class HostToClientWriterThread extends Thread {
 	public void run() {
 
 		while (!isInterrupted()) {
-			hostMonitor.sendData();
+			try {
+				hostMonitor.sendData();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-//			SenderData data = hostMonitor.getSendData();
-//			for (OutputStream os : data.destinations) {
-//				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-//						os));
-//				try {
-//					bw.write(data.message + System.lineSeparator());
-//					bw.flush();
-//				} catch (IOException e) {
-//					// TODO Handle not being able to write to outputstream in monitor or
-//					// elsewhere
-//				}
-//			}
-//		}
 	}
 
 }

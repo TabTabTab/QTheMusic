@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import MusicQueue.HostMusicQueue;
 import Protocol.DebugConstants;
 import userApplication.connection.HostIDFetcherThread;
-import userApplication.connection.NewClientListenerThread;
+import userApplication.connection.IncomingClientListenerThread;
 import userApplication.monitor.HostMonitor;
 
 public class UserHost implements Runnable{
@@ -38,7 +38,7 @@ public class UserHost implements Runnable{
 		
 		startTheMusicPlayer(musicFolderPath);
 		try {
-			NewClientListenerThread clientListener = new NewClientListenerThread(monitor,DebugConstants.HOST_PORT);
+			IncomingClientListenerThread clientListener = new IncomingClientListenerThread(monitor,DebugConstants.HOST_PORT);
 			clientListener.start();
 		} catch (IOException e) {
 			e.printStackTrace();
