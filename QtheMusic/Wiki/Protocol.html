@@ -52,14 +52,8 @@
                        P1. get host info(contains: a hostID)
                        . . . . . . . . . . . . .>
                        
-                       P2. The nbr of available tracks (contains: nbrOfTracks)
-                       		The client will now wait for nbrOfTracks P3 messages
-                    < . . . . . . . . . . .
-                    
-                    P3. The available track (contains: a track name)
-                    < . . . . . . . . . . .
                        
-                       P4. the set up response (if success:contains a socket address to the host )
+                       P2. the set up response (if success:contains a socket address to the host )
                     < . . . . . . . . . . .
 |----------------|
 |                |
@@ -73,14 +67,9 @@
 		<h4>P1</h4>
 			A line containing a number.
 		
+	
+		
 		<h4>P2</h4>
-			A line containing a number
-		
-		<h4>P3</h4>
-			A line containing a string.
-		
-		
-		<h4>P4</h4>
 			A line containing a colon separated ip string and port number.</br>
 			-1 if the requested hostId did not exist.
 
@@ -99,7 +88,13 @@
                      P1. queue this song(contains: a trackId ..)
                      . . . . . . . . . . . > 
                      
-                     P2. an action (contains: an event that happened to the queue
+                     P2. The nbr of available tracks (contains: nbrOfTracks)
+                    < . . . . . . . . . . .
+                    
+                     P3*. The available track (contains: a track name)
+                    < . . . . . . . . . . .
+                     
+                     P4. an action (contains: an event that happened to the queue
                      			e.g. "track with id 4 added to queue" or "track at queue index 0 removed")
                     < . . . . . . . . . . .
 |----------------|
@@ -114,11 +109,21 @@
 	<h3>Packages<h3>
 		<h4>P1</h4>
 			A line containing a number larger than or equal to 0.
+			
+			
 		<h4>P2</h4>
+			A line containing a number
+		
+		<h4>P3*</h4>
+			A line containing a string.
+		
+		
+		<h4>P4</h4>
 			A line containing two colon separated numbers.</br>
 			The first number is an enum according to the action (add/remove) the second is the queue index</br>
 			of the track to be removed.
 
+<p>*<i>Multiple messages will be sent when establishing a connection. The client will wait for nbrOfTracks P3 messages.</i></p>
 </body>
 </html>
 
