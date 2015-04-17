@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class HostMusicQueue extends MusicQueue {
 	private String folderPath;
 	private boolean songIsPlaying = false;
+	private PlayerCommand command;
 	/**
 	 * Creates a new Host MusiqQueue
 	 * @param availableTracks a list with the names of available tracks,
@@ -13,6 +14,7 @@ public class HostMusicQueue extends MusicQueue {
 	 */
 	public HostMusicQueue(ArrayList<String> availableTracks){
 		super(availableTracks);
+		command = PlayerCommand.NOTHING;
 	}
 	
 	/**
@@ -59,6 +61,11 @@ public class HostMusicQueue extends MusicQueue {
 		}
 	}
 	
+	
+	public synchronized void setCommand(PlayerCommand command){
+		this.command = command;
+		notifyAll();
+	}
 	public synchronized void startingSong(){
 		songIsPlaying = true;
 	}
@@ -68,14 +75,20 @@ public class HostMusicQueue extends MusicQueue {
 	}
 	/**
 	 * method for the music playing thread to wait for the song to finish
+	 * @throws InterruptedException 
 	 */
-	public synchronized void waitForFinishedSongOrCommand(){
-		while(songIsPlaying){
-			try {
+	public synchronized PlayerCommand waitForFinishedSongOrCommand() throws InterruptedException{
+		while(songIsPlaying && (command == PlayerCommand.NOTHING || command == PlayerCommand.PLAY)){
 				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
+		System.out.println("helllo folke " + command + " " + songIsPlaying);
+		return command;
+	}
+
+	public synchronized PlayerCommand waitForCommand() throws InterruptedException {
+		while(command == PlayerCommand.STOP || command == PlayerCommand.NOTHING ){
+			wait();
+		}
+		return command;
 	}
 }

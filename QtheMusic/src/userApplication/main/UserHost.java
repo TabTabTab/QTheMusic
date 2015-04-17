@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import MusicQueue.HostMusicQueue;
+import MusicQueue.PlayerCommand;
 import Protocol.DebugConstants;
 import userApplication.connection.HostIDFetcherThread;
 import userApplication.connection.IncomingClientListenerThread;
@@ -42,6 +44,28 @@ public class UserHost implements Runnable{
 			clientListener.start();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		Scanner scanner = new Scanner(System.in);
+		
+		while(true){
+			System.out.println("Please write a command pls");
+			int command = scanner.nextInt();
+			// 1 == stop, 2 = next, 3 = play 4 == nothing
+			switch (command){
+			case 1:
+				queue.setCommand(PlayerCommand.STOP);
+				break;
+			case 2:
+				queue.setCommand(PlayerCommand.NEXT);
+				break;
+			case 3:
+				queue.setCommand(PlayerCommand.PLAY);
+				break;
+			case 4:
+				queue.setCommand(PlayerCommand.NOTHING);
+				break;
+			}
+			
 		}
 		
 	}

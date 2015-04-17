@@ -223,7 +223,7 @@ public class HostMonitor implements ConnectionMonitor {
 	}
 
 	public synchronized void sendData() throws InterruptedException, IOException {
-		while (outBox.isEmpty()) {
+/*		while (outBox.isEmpty()) {
 			wait();
 		}
 		for (QueueActionMessage queueMessage : outBox) {
@@ -241,7 +241,7 @@ public class HostMonitor implements ConnectionMonitor {
 				break;
 			}
 			sendMessageToClient(message, recipients);
-		}
+		} */
 
 	}
 

@@ -16,7 +16,6 @@ public class MusicPlaybackThread extends Thread{
 	
 	public void run(){
 		try {
-			queue.startingSong();
 			player.play();
 			queue.finishedSong();
 		} catch (JavaLayerException e) {
