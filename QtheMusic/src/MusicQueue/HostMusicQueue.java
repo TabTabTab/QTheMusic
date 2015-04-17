@@ -1,3 +1,4 @@
+
 package MusicQueue;
 
 import java.util.ArrayList;
@@ -89,6 +90,8 @@ public class HostMusicQueue extends MusicQueue {
 		while(command == PlayerCommand.STOP || command == PlayerCommand.NOTHING ){
 			wait();
 		}
-		return command;
+		PlayerCommand tempCommand = command;
+		command = PlayerCommand.NOTHING;
+		return tempCommand;
 	}
 }

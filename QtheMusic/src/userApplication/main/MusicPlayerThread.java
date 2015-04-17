@@ -61,6 +61,8 @@ public class MusicPlayerThread extends Thread {
 					player.close();
 					PlayerCommand nextCommand = queue.waitForCommand();
 					if (nextCommand == PlayerCommand.PLAY) {
+						fis = new FileInputStream(folderPath + "/" + musicFileName);
+						bis = new BufferedInputStream(fis);
 						player = new Player(bis);
 						playback = new MusicPlaybackThread(queue, player);
 						playback.start();
@@ -120,3 +122,4 @@ public class MusicPlayerThread extends Thread {
 	}
 
 }
+

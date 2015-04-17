@@ -24,4 +24,9 @@ An Administrator Client should be created (next, pause etc).
 
 Implement a pause function for the player.
 
+Next song not workning. Need to reset to NOTHING after getting the last command.
+
+Reset BufferStreams when stopping a song.
+
+Need to debug the music player threads, and hostmusicqueue methods
  

@@ -1,3 +1,4 @@
+
 package userApplication.monitor;
 
 import java.io.BufferedWriter;
@@ -8,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import MusicQueue.Action;
 import MusicQueue.HostMusicQueue;
 import MusicQueue.QueueActionMessage;
 import Protocol.CentralServerProtocol;
@@ -23,7 +25,7 @@ public class HostMonitor implements ConnectionMonitor {
 	private ArrayList<QueueActionMessage> outBox;
 
 	// 0 betyder ledigt, 1 upptaget eller hur är tanken?
-	private int[] connections;
+	private boolean[] usedConnections;
 	private OutputStream[] connectionStreams;
 	private int numberOfAllowedClients;
 	private int numberOfConnectedClients = 0;
@@ -31,10 +33,11 @@ public class HostMonitor implements ConnectionMonitor {
 
 	public HostMonitor(int numberOfAllowedClients) {
 		this.numberOfAllowedClients = numberOfAllowedClients;
-		connections = new int[numberOfAllowedClients];
+		usedConnections = new boolean[numberOfAllowedClients];
 		connectionStreams = new OutputStream[numberOfAllowedClients];
 		hostId = UNSET_HOST_ID;
 		statusMessage = "";
+		outBox=new ArrayList<QueueActionMessage>();
 	}
 
 	public synchronized void setMusicQueue(HostMusicQueue songQueue) {
@@ -94,8 +97,8 @@ public class HostMonitor implements ConnectionMonitor {
 	public synchronized int addNewClient(OutputStream outputStream) {
 		int id = -1;
 		for (int i = 0; i < numberOfAllowedClients; i++) {
-			if (connections[i] == 0) {
-				connections[i] = 1;
+			if (!usedConnections[i]) {
+				usedConnections[i] = true;
 				id = i;
 				break;
 			}
@@ -105,25 +108,36 @@ public class HostMonitor implements ConnectionMonitor {
 		}
 		connectionStreams[id] = outputStream;
 		numberOfConnectedClients++;
+		sendAvailableTracksToClient(id);
 		return id;
 
 	}
-
+	private synchronized void sendAvailableTracksToClient(int clientId){
+		System.out.println("writing tracks to client");
+		OutputStream clientOS=connectionStreams[clientId];
+		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(clientOS));
+		ArrayList<String> availableTracks=songQueue.getAvailableTracks();
+		writeToClient(bw,""+availableTracks.size());
+		for(String track:songQueue.getAvailableTracks()){
+			writeToClient(bw,track);
+		}
+		System.out.println("written to client");
+		
+	}
+	private synchronized void writeToClient(BufferedWriter bw,String line){
+		try {
+			bw.write(line+System.lineSeparator());
+			bw.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public synchronized String read() throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public synchronized void addAction(QueueActionMessage action) {
-		int index = 0;
-		for (int clientId : connections) {
-			if (clientId != 0) {
-				action.addRecipient(index);
-			}
-			index++;
-		}
-		outBox.add(action);
-	}
 
 	public synchronized String getHostAddress() {
 		// TODO Auto-generated method stub
@@ -205,6 +219,18 @@ public class HostMonitor implements ConnectionMonitor {
 		return null;
 	}
 
+	public synchronized void addAction(QueueActionMessage action) {
+		int index = 0;
+		for (boolean clientId : usedConnections) {
+			if (clientId == false) {
+				action.addRecipient(index);
+			}
+			index++;
+		}
+		outBox.add(action);
+		notifyAll();
+	}
+	
 	public synchronized void processRequest(String line, int id) {
 		System.out.println("Got a request from a client: '" + line + "'");
 		String[] splittedLine = line.split(" ");
@@ -213,7 +239,8 @@ public class HostMonitor implements ConnectionMonitor {
 		case "Q":
 			int trackIndex = Integer.parseInt(splittedLine[1]);
 			songQueue.addToQueue(trackIndex);
-			
+			QueueActionMessage queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,trackIndex);
+			addAction(queueActionMessage);
 			break;
 		default:
 			System.out.println("Unknown command");
@@ -223,7 +250,7 @@ public class HostMonitor implements ConnectionMonitor {
 	}
 
 	public synchronized void sendData() throws InterruptedException, IOException {
-/*		while (outBox.isEmpty()) {
+		while (outBox.isEmpty()) {
 			wait();
 		}
 		for (QueueActionMessage queueMessage : outBox) {
@@ -241,7 +268,7 @@ public class HostMonitor implements ConnectionMonitor {
 				break;
 			}
 			sendMessageToClient(message, recipients);
-		} */
+		}
 
 	}
 
@@ -261,3 +288,4 @@ public class HostMonitor implements ConnectionMonitor {
 	}
 
 }
+
