@@ -3,12 +3,18 @@ package userApplication.monitor;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import MusicQueue.ClientMusicQueue;
 import centralServer.database.ServerMonitor;
 
 public class ClientMonitor implements ConnectionMonitor{
 	private String hostAddress=null;
+	private ClientMusicQueue musicQueue;
 	public ClientMonitor(){
-		
+		musicQueue=null;
+	}
+	public synchronized void setMusicQueue(ClientMusicQueue musicQueue){
+		this.musicQueue=musicQueue;
+		notifyAll();
 	}
 	public synchronized void write(String data) {
 		// TODO Auto-generated method stub

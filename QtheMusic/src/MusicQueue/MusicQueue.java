@@ -33,4 +33,8 @@ public abstract class MusicQueue {
 		}
 		return tracknameQueue;
 	}
+	public ArrayList<String> getAvailableTracks(){
+		//TODO: maybe do not give this away?
+		return availableTracks;
+	}
 }

@@ -9,6 +9,8 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 
+
+import userApplication.connection.ClientFromHostReaderThread;
 import userApplication.connection.HostAddressRetriever;
 import userApplication.connection.InvalidResponseException;
 import userApplication.monitor.ClientMonitor;
@@ -35,9 +37,11 @@ public class UserClient implements Runnable{
 			InetSocketAddress hostAddress=har.retreiveHostAddress(ID);
 			System.out.println("We got the host address:");
 			System.out.println(hostAddress);
-			
 			Socket socket = new Socket(hostAddress.getHostString(),hostAddress.getPort());
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			ClientFromHostReaderThread hostListener=new ClientFromHostReaderThread(socket.getInputStream(),
+					clientMonitor);
+			hostListener.run();
 			while(true){
 				System.out.println("what song do you want to queue?");
 					int songID = keyboard.nextInt();

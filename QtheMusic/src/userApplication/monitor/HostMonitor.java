@@ -1,7 +1,9 @@
 package userApplication.monitor;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -83,6 +85,8 @@ public class HostMonitor implements ConnectionMonitor {
 	
 	//vilken av dessa ska användas?
 	//bygger upp en minimal variant för att se om jag kan skapa ett väldigt simpelt system med köande av låtar.
+	
+	//just nu skickar vi �ven h�r alla l�tar till klienten
 	public synchronized int addNewClient(OutputStream outputStream) {
 		int id=-1;
 		for(int i=0;i<numberOfAllowedClients;i++){
@@ -97,11 +101,30 @@ public class HostMonitor implements ConnectionMonitor {
 		}
 		connectionStreams[id]=outputStream;
 		numberOfConnectedClients++;
+		//TODO: talk about 
+		sendAvailableTracksToClient(id);
 		return id;
 
 	}
 	
-	
+	private synchronized void sendAvailableTracksToClient(int clientId){
+		OutputStream clientOS=connectionStreams[clientId];
+		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(clientOS));
+		ArrayList<String> availableTracks=songQueue.getAvailableTracks();
+		writeToClient(bw,""+availableTracks.size());
+		for(String track:songQueue.getAvailableTracks()){
+			writeToClient(bw,track);
+		}
+	}
+	private synchronized void writeToClient(BufferedWriter bw,String line){
+		try {
+			bw.write(line+System.lineSeparator());
+			bw.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public synchronized String read() throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
@@ -210,7 +233,7 @@ public class HostMonitor implements ConnectionMonitor {
 		}
 
 	}
-
+	
 	public synchronized void sendData() {
 		//metod som låser HostToCLientWriter tråden och skickar data till de klienter som ska ha det, dvs HostToCIlentWriter tråden snurrar bara i denna metoden hela tiden
 		
