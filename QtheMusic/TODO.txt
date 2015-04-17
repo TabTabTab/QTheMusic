@@ -3,13 +3,24 @@ Todo:
 ALWAYS ACTIVE: Correct all variable names etc. Host, Client and CentralServer should be used.
 
 
+
 Host should be able to send all available tracks to the client.
+
 Host should be able to sent queue ADD/queue REMOVE to Client. (No index yet).
+
 Define client-host protocol.
+
+Error checking everywhere!
+
 HTTP research.
+
 Add MusicPlayer functionality (stop, "next", play).
+
 MusicPlayer support multiple file formats.
+
 Host should be able to control the music player.
+
 An Administrator Client should be created (next, pause etc).
+ 
 
  
