@@ -69,7 +69,7 @@ public class HostMusicQueue extends MusicQueue {
 	/**
 	 * method for the music playing thread to wait for the song to finish
 	 */
-	public synchronized void waitForFinishedSong(){
+	public synchronized void waitForFinishedSongOrCommand(){
 		while(songIsPlaying){
 			try {
 				wait();

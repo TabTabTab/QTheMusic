@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 //import sun.audio.AudioPlayer;
-//import sun.audio.AudioStream;
+//import sun.audio.AudioStrea
 import MusicQueue.HostMusicQueue;
 
 public class MusicPlayerThread extends Thread{
@@ -46,7 +46,9 @@ public class MusicPlayerThread extends Thread{
 				BufferedInputStream bis = new BufferedInputStream(fis);
 				Player player;
 				player = new Player(bis);
-				player.play(); 
+				MusicPlaybackThread playback = new MusicPlaybackThread(queue,player);
+				playback.start();
+				queue.waitForFinishedSongOrCommand();
 			} catch (FileNotFoundException | JavaLayerException e2) {
 				e2.printStackTrace();
 			}
