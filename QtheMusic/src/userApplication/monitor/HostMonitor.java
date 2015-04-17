@@ -211,8 +211,9 @@ public class HostMonitor implements ConnectionMonitor {
 		String command = splittedLine[0];
 		switch (command) {
 		case "Q":
-			songQueue.addToQueue(Integer.parseInt(splittedLine[1]));
-
+			int trackIndex = Integer.parseInt(splittedLine[1]);
+			songQueue.addToQueue(trackIndex);
+			
 			break;
 		default:
 			System.out.println("Unknown command");
