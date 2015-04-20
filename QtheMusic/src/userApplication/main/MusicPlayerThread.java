@@ -54,25 +54,45 @@ public class MusicPlayerThread extends Thread {
 						player);
 				playback.start();
 				queue.startingSong();
-
-				PlayerCommand command = queue.waitForFinishedSongOrCommand();
-				switch (command) {
-				case STOP:
-					player.close();
-					PlayerCommand nextCommand = queue.waitForCommand();
-					if (nextCommand == PlayerCommand.PLAY) {
-						fis = new FileInputStream(folderPath + "/" + musicFileName);
-						bis = new BufferedInputStream(fis);
-						player = new Player(bis);
-						playback = new MusicPlaybackThread(queue, player);
-						playback.start();
+				
+				boolean finishedWithSong = false;
+				while(!finishedWithSong){
+					PlayerCommand command = queue.waitForFinishedSongOrCommand();
+					if(command==PlayerCommand.NOTHING){				
+						// we recived no command, the song just finished so we exit the loop
+						break;
 					}
-					break;
-				case NEXT:
-					player.close();
-					break;
-				default:
-					break;
+					switch (command) {
+					case STOP:
+						queue.finishedSong();
+						player.close();
+						PlayerCommand nextCommand = queue.waitForCommand();
+						if (nextCommand == PlayerCommand.PLAY) {
+							System.out.println("här????");
+							fis = new FileInputStream(folderPath + "/" + musicFileName);
+							bis = new BufferedInputStream(fis);
+							player = new Player(bis);
+							playback = new MusicPlaybackThread(queue, player);
+							queue.startingSong();
+							playback.start();
+						//	Thread.sleep(10000);
+						}
+						else{
+							player.close();
+							queue.finishedSong();
+							finishedWithSong=true;
+						}
+						break;
+					case NEXT:
+						player.close();
+						queue.finishedSong();
+						finishedWithSong=true;
+						break;
+					default:
+						break;
+					}
+
+					queue.setCommand(PlayerCommand.NOTHING);
 				}
 			} catch (FileNotFoundException | JavaLayerException e2) {
 				e2.printStackTrace();
@@ -110,12 +130,12 @@ public class MusicPlayerThread extends Thread {
 			// queue.waitForFinishedSong();
 
 			// some pause between the songs?
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-
-				e.printStackTrace();
-			}
+			//			try {
+			//				Thread.sleep(2000);
+			//			} catch (InterruptedException e) {
+			//
+			//				e.printStackTrace();
+			//			}
 
 		}
 

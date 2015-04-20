@@ -82,7 +82,8 @@ public class HostMusicQueue extends MusicQueue {
 		while(songIsPlaying && (command == PlayerCommand.NOTHING || command == PlayerCommand.PLAY)){
 				wait();
 		}
-		System.out.println("helllo folke " + command + " " + songIsPlaying);
+		System.out.println("ccommand " + command);
+		System.out.println("Song is playing "+songIsPlaying);
 		return command;
 	}
 
