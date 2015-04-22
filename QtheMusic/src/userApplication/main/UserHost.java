@@ -61,8 +61,11 @@ public class UserHost implements Runnable{
 			case 3:
 				queue.setCommand(PlayerCommand.PLAY);
 				break;
-			}
 			
+			case 4:
+				queue.setCommand(PlayerCommand.PAUSE);
+				break;
+			}
 		}
 		
 	}

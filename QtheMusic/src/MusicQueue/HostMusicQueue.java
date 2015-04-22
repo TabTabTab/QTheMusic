@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class HostMusicQueue extends MusicQueue {
 	private String folderPath;
-	private boolean songIsPlaying = false;
+	public boolean songIsPlaying = false;
 	private PlayerCommand command;
 	/**
 	 * Creates a new Host MusiqQueue
@@ -88,7 +88,7 @@ public class HostMusicQueue extends MusicQueue {
 	}
 
 	public synchronized PlayerCommand waitForCommand() throws InterruptedException {
-		while(command == PlayerCommand.STOP || command == PlayerCommand.NOTHING ){
+		while(command == PlayerCommand.STOP || command == PlayerCommand.NOTHING || command==PlayerCommand.PAUSE){
 			wait();
 		}
 		PlayerCommand tempCommand = command;

@@ -7,13 +7,16 @@ import java.util.ArrayList;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 //import sun.audio.AudioPlayer;
 //import sun.audio.AudioStrea
 import MusicQueue.HostMusicQueue;
 import MusicQueue.PlayerCommand;
 
 public class MusicPlayerThread extends Thread {
-
+	private int pausedOnFrame;
 	HostMusicQueue queue;
 	ArrayList<String> songList;
 	String folderPath;
@@ -27,12 +30,7 @@ public class MusicPlayerThread extends Thread {
 
 	public void run() {
 		while (true) {
-			// System.out.println("Songs in queue:");
-			// ArrayList<String> songNamesInQueue = queue.getQueueTracks();
-			// for(String songName : songNamesInQueue){
-			// System.out.println(songName);
-			// }
-			// System.out.println("Starting first song in queue");
+
 
 			// TODO:
 			// fixa så att man kan spela .wav filer också? Nu kan man
@@ -40,7 +38,7 @@ public class MusicPlayerThread extends Thread {
 			// fixa så att mp3:orna spelas på en annan tråd, då skulle man
 			// t.ex kunna avbryta det från den tråden
 			// nu köras det på denna tråden, dvs Player.play är blockerande
-
+			pausedOnFrame=0;
 			int songIdToPlay = queue.getNextSongId();
 			String musicFileName = songList.get(songIdToPlay);
 			FileInputStream fis;
@@ -48,14 +46,22 @@ public class MusicPlayerThread extends Thread {
 				System.out.println(folderPath + "/" + musicFileName);
 				fis = new FileInputStream(folderPath + "/" + musicFileName);
 				BufferedInputStream bis = new BufferedInputStream(fis);
-				Player player;
-				player = new Player(bis);
-				MusicPlaybackThread playback = new MusicPlaybackThread(queue,
-						player);
+				AdvancedPlayer player;
+				player = new AdvancedPlayer(bis);
+				player.setPlayBackListener(new PlaybackListener() {
+				    @Override
+				    public void playbackFinished(PlaybackEvent event) {
+				        pausedOnFrame = event.getFrame();
+				    }
+				});
+				
+				
+				MusicPlaybackThread playback = new MusicPlaybackThread(queue,player,pausedOnFrame);
 				playback.start();
 				queue.startingSong();
-				
+
 				boolean finishedWithSong = false;
+				PlayerCommand nextCommand;
 				while(!finishedWithSong){
 					PlayerCommand command = queue.waitForFinishedSongOrCommand();
 					if(command==PlayerCommand.NOTHING){				
@@ -65,17 +71,22 @@ public class MusicPlayerThread extends Thread {
 					switch (command) {
 					case STOP:
 						queue.finishedSong();
+						//player.stop();
 						player.close();
-						PlayerCommand nextCommand = queue.waitForCommand();
+						nextCommand = queue.waitForCommand();
 						if (nextCommand == PlayerCommand.PLAY) {
-							System.out.println("här????");
 							fis = new FileInputStream(folderPath + "/" + musicFileName);
 							bis = new BufferedInputStream(fis);
-							player = new Player(bis);
-							playback = new MusicPlaybackThread(queue, player);
+							player = new AdvancedPlayer(bis);
+							player.setPlayBackListener(new PlaybackListener() {
+							    @Override
+							    public void playbackFinished(PlaybackEvent event) {
+							        pausedOnFrame = event.getFrame();
+							    }
+							});
+							playback = new MusicPlaybackThread(queue, player,0);
 							queue.startingSong();
 							playback.start();
-						//	Thread.sleep(10000);
 						}
 						else{
 							player.close();
@@ -83,6 +94,38 @@ public class MusicPlayerThread extends Thread {
 							finishedWithSong=true;
 						}
 						break;
+
+					case PAUSE:
+						queue.finishedSong();
+						
+						player.stop();
+						player.close();
+						System.out.println("Pausad på frame: "+pausedOnFrame);
+						nextCommand = queue.waitForCommand();
+						System.out.println("nästa kommando: "+nextCommand);
+						System.out.println("startar sång"+queue.songIsPlaying);
+						if (nextCommand == PlayerCommand.PLAY) {
+							//hantera start från paus
+							fis = new FileInputStream(folderPath + "/" + musicFileName);
+							bis = new BufferedInputStream(fis);
+							player = new AdvancedPlayer(bis);
+							player.setPlayBackListener(new PlaybackListener() {
+							    @Override
+							    public void playbackFinished(PlaybackEvent event) {
+							        pausedOnFrame = event.getFrame();
+							    }
+							});
+							playback = new MusicPlaybackThread(queue, player,pausedOnFrame);
+							queue.startingSong();
+							playback.start();
+
+						}
+						else{
+							player.close();
+							queue.finishedSong();
+							finishedWithSong=true;
+						}
+						break;	
 					case NEXT:
 						player.close();
 						queue.finishedSong();

@@ -1,5 +1,5 @@
 package MusicQueue;
 
 public enum PlayerCommand {
-	STOP, NEXT, PLAY, NOTHING
+	STOP, NEXT, PLAY, NOTHING, PAUSE
 }

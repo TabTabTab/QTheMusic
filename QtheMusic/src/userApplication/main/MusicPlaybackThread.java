@@ -2,21 +2,26 @@ package userApplication.main;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
 import MusicQueue.HostMusicQueue;
 
 public class MusicPlaybackThread extends Thread{
 
-	private Player player;
+	private AdvancedPlayer player;
 	private HostMusicQueue queue;
+	private int startFromFrame;
 
-	public MusicPlaybackThread(HostMusicQueue queue, Player player){
+	public MusicPlaybackThread(HostMusicQueue queue, AdvancedPlayer player, int startFromFrame){
 		this.queue = queue;
 		this.player = player;
+		this.startFromFrame = startFromFrame;
 	}
 	
 	public void run(){
 		try {
-			player.play();
+			System.out.println("Jag ska starta på: "+startFromFrame);
+			player.play(startFromFrame,Integer.MAX_VALUE);
+			System.out.println("nu har jag spelat klart min låt");
 			queue.finishedSong();
 		} catch (JavaLayerException e) {
 			// TODO Auto-generated catch block
