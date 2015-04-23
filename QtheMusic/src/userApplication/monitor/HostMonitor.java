@@ -39,6 +39,7 @@ public class HostMonitor implements ConnectionMonitor {
 		statusMessage = "";
 		outBox=new ArrayList<QueueActionMessage>();
 	}
+	
 
 	public synchronized void setMusicQueue(HostMusicQueue songQueue) {
 		this.songQueue = songQueue;
@@ -124,6 +125,12 @@ public class HostMonitor implements ConnectionMonitor {
 		System.out.println("written to client");
 		
 	}
+	private synchronized void sendCurrentQueueToClients(int playingSong){
+		ArrayList<Integer> queue=songQueue.getCopyOfQueue();
+		//använd johans sendadata för att faktiskt skicka ngt
+	}
+	
+	
 	private synchronized void writeToClient(BufferedWriter bw,String line){
 		try {
 			bw.write(line+System.lineSeparator());

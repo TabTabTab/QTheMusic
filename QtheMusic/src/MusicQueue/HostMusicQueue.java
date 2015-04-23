@@ -18,6 +18,15 @@ public class HostMusicQueue extends MusicQueue {
 		command = PlayerCommand.NOTHING;
 	}
 	
+	public synchronized ArrayList<Integer> getCopyOfQueue(){
+		ArrayList<Integer> copy =new ArrayList<Integer>();
+		for(int track : trackQueue){
+			copy.add(track);
+		}
+		return copy;
+	}
+	
+	
 	/**
 	 * Removes the first track in the queue
 	 * @return true if the track was successfully removed, otherwise false

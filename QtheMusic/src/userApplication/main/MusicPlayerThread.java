@@ -35,11 +35,14 @@ public class MusicPlayerThread extends Thread {
 			// TODO:
 			// fixa så att man kan spela .wav filer också? Nu kan man
 			// istället bara spela .mp3:or
-			// fixa så att mp3:orna spelas på en annan tråd, då skulle man
-			// t.ex kunna avbryta det från den tråden
-			// nu köras det på denna tråden, dvs Player.play är blockerande
+
+			
+			
 			pausedOnFrame=0;
+			
 			int songIdToPlay = queue.getNextSongId();
+			//skicka alla låtar i kön till klienterna
+			
 			String musicFileName = songList.get(songIdToPlay);
 			FileInputStream fis;
 			try {
