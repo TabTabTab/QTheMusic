@@ -91,9 +91,11 @@ public class HostMusicQueue extends MusicQueue {
 		while(songIsPlaying && (command == PlayerCommand.NOTHING || command == PlayerCommand.PLAY)){
 				wait();
 		}
-		System.out.println("ccommand " + command);
+		System.out.println("command " + command);
 		System.out.println("Song is playing "+songIsPlaying);
-		return command;
+		PlayerCommand tempCommand = command;
+		command = PlayerCommand.NOTHING;
+		return tempCommand;
 	}
 
 	public synchronized PlayerCommand waitForCommand() throws InterruptedException {
