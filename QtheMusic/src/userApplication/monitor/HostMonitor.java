@@ -30,6 +30,7 @@ public class HostMonitor implements ConnectionMonitor {
 	private int numberOfAllowedClients;
 	private int numberOfConnectedClients = 0;
 	private HostMusicQueue songQueue;
+	private int currentlyPlayingSongID;
 
 	public HostMonitor(int numberOfAllowedClients) {
 		this.numberOfAllowedClients = numberOfAllowedClients;
@@ -128,6 +129,9 @@ public class HostMonitor implements ConnectionMonitor {
 	private synchronized void sendCurrentQueueToClients(int playingSong){
 		ArrayList<Integer> queue=songQueue.getCopyOfQueue();
 		//använd johans sendadata för att faktiskt skicka ngt
+		
+		
+		
 	}
 	
 	
@@ -229,7 +233,8 @@ public class HostMonitor implements ConnectionMonitor {
 	public synchronized void addAction(QueueActionMessage action) {
 		int index = 0;
 		for (boolean clientId : usedConnections) {
-			if (clientId == false) {
+			// borde det inte vara true här?
+			if (clientId == true) {
 				action.addRecipient(index);
 			}
 			index++;
@@ -265,18 +270,25 @@ public class HostMonitor implements ConnectionMonitor {
 			String message;
 			switch (queueMessage.getAction()) {
 			case ADD_TRACK:
-				message = "Track got added to queue";
+				message = "A "+queueMessage.getTrackindex();
 				break;
 			case REMOVE_TRACK:
 				message = "Track got removed";
 				break;
+			case STARTED_TRACK:
+				message = "S";
+				break;
+			case FINISHED_CURRENT_TRACK:
+				message = "F";
+				break;	
 			default:
 				message = "Unsuccessfull queue message";
 				break;
 			}
+			System.out.println("Jag ska skicka'"+message+"' till alla");
 			sendMessageToClient(message, recipients);
 		}
-
+		outBox = new ArrayList<QueueActionMessage>();
 	}
 
 	private void sendMessageToClient(String message,

@@ -78,7 +78,7 @@ public class UserHost implements Runnable{
 		ArrayList<String> temp = getMusicFileNames(folderPath);
 		queue = new HostMusicQueue(temp);
 		monitor.setMusicQueue(queue);
-		MusicPlayerThread player = new MusicPlayerThread(queue,songNames,folderPath);
+		MusicPlayerThread player = new MusicPlayerThread(queue,songNames,folderPath,monitor);
 		player.start();
 	}
 	/**

@@ -23,7 +23,9 @@ public class HostToClientWriterThread extends Thread {
 
 		while (!isInterrupted()) {
 			try {
+				
 				hostMonitor.sendData();
+				System.out.println("nu har jag skickat data");
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

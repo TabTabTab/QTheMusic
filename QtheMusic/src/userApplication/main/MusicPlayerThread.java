@@ -5,27 +5,31 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import userApplication.monitor.HostMonitor;
+
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
+import MusicQueue.Action;
 //import sun.audio.AudioPlayer;
 //import sun.audio.AudioStrea
 import MusicQueue.HostMusicQueue;
 import MusicQueue.PlayerCommand;
+import MusicQueue.QueueActionMessage;
 
 public class MusicPlayerThread extends Thread {
 	private int pausedOnFrame;
 	HostMusicQueue queue;
 	ArrayList<String> songList;
 	String folderPath;
-
-	public MusicPlayerThread(HostMusicQueue queue, ArrayList<String> songList,
-			String folderPath) {
+	HostMonitor monitor;
+	public MusicPlayerThread(HostMusicQueue queue, ArrayList<String> songList,String folderPath, HostMonitor monitor) {
 		this.queue = queue;
 		this.songList = songList;
 		this.folderPath = folderPath;
+		this.monitor=monitor;
 	}
 
 	public void run() {
@@ -41,7 +45,8 @@ public class MusicPlayerThread extends Thread {
 			pausedOnFrame=0;
 			
 			int songIdToPlay = queue.getNextSongId();
-			//skicka alla låtar i kön till klienterna
+			QueueActionMessage queueActionMessage= new QueueActionMessage(Action.STARTED_TRACK,-1);
+			monitor.addAction(queueActionMessage);
 			
 			String musicFileName = songList.get(songIdToPlay);
 			FileInputStream fis;
@@ -147,6 +152,10 @@ public class MusicPlayerThread extends Thread {
 				e.printStackTrace();
 			}
 
+			queueActionMessage= new QueueActionMessage(Action.FINISHED_CURRENT_TRACK,-1);
+			monitor.addAction(queueActionMessage);
+			
+			
 			// try{
 			// File musicFile = new File(folderPath+"/"+musicFileName);
 			// AudioInputStream stream;

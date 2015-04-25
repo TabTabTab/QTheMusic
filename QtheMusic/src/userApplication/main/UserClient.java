@@ -41,7 +41,7 @@ public class UserClient implements Runnable{
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			ClientFromHostReaderThread hostListener=new ClientFromHostReaderThread(socket.getInputStream(),
 					clientMonitor);
-			hostListener.run();
+			hostListener.start();
 			while(true){
 				System.out.println("what song do you want to queue?");
 					int songID = keyboard.nextInt();
