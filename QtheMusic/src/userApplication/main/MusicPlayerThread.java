@@ -45,6 +45,7 @@ public class MusicPlayerThread extends Thread {
 			pausedOnFrame=0;
 			
 			int songIdToPlay = queue.getNextSongId();
+			monitor.setCurrentlyPlayingSongID(songIdToPlay);
 			QueueActionMessage queueActionMessage= new QueueActionMessage(Action.STARTED_TRACK,-1);
 			monitor.addAction(queueActionMessage);
 			
@@ -79,10 +80,15 @@ public class MusicPlayerThread extends Thread {
 					switch (command) {
 					case STOP:
 						queue.finishedSong();
+						queueActionMessage= new QueueActionMessage(Action.STOPPED_TRACK,-1);
+						monitor.addAction(queueActionMessage);
+						
 						//player.stop();
 						player.close();
 						nextCommand = queue.waitForCommand();
 						if (nextCommand == PlayerCommand.PLAY) {
+							queueActionMessage= new QueueActionMessage(Action.STARTED_TRACK,-1);
+							monitor.addAction(queueActionMessage);
 							fis = new FileInputStream(folderPath + "/" + musicFileName);
 							bis = new BufferedInputStream(fis);
 							player = new AdvancedPlayer(bis);
@@ -154,7 +160,7 @@ public class MusicPlayerThread extends Thread {
 
 			queueActionMessage= new QueueActionMessage(Action.FINISHED_CURRENT_TRACK,-1);
 			monitor.addAction(queueActionMessage);
-			
+			monitor.setCurrentlyPlayingSongID(-1);
 			
 			// try{
 			// File musicFile = new File(folderPath+"/"+musicFileName);

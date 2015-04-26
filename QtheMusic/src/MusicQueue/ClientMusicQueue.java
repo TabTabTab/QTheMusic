@@ -23,6 +23,9 @@ public class ClientMusicQueue extends MusicQueue{
 	public synchronized void startingSong(){
 		songIsPlaying=true;
 	}
+	public synchronized void stoppingSong(){
+		songIsPlaying=false;
+	}
 	public synchronized void finishedSong(){
 		songIsPlaying=false;
 		trackQueue.remove(0);
@@ -36,11 +39,13 @@ public class ClientMusicQueue extends MusicQueue{
 					System.out.println("Currently playing: "+availableTracks.get(trackID));
 				}
 				else{
-					availableTracks.get(trackID);
+					System.out.println(availableTracks.get(trackID));
 				}
 				firstSong=false;
 			}
-			System.out.println(availableTracks.get(trackID));
+			else{
+				System.out.println(availableTracks.get(trackID));
+			}
 		}
 	}
 

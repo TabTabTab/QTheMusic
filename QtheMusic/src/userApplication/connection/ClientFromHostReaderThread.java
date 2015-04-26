@@ -49,6 +49,9 @@ public class ClientFromHostReaderThread extends Thread{
 				case "S":
 					musicQueue.startingSong();
 					break;
+				case "STOP":
+					musicQueue.stoppingSong();
+					break;
 				case "F":
 					musicQueue.finishedSong();
 					break;	

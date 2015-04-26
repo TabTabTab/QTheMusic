@@ -42,10 +42,12 @@ public class UserClient implements Runnable{
 			ClientFromHostReaderThread hostListener=new ClientFromHostReaderThread(socket.getInputStream(),
 					clientMonitor);
 			hostListener.start();
+			System.out.println("Q + track id for queing, 'list' for requesting the whole que");
 			while(true){
-				System.out.println("what song do you want to queue?");
-					int songID = keyboard.nextInt();
-					writer.write("Q "+songID+"\n");
+				System.out.println("what command do you want to send");
+					String line = keyboard.nextLine();
+				//	int songID = keyboard.nextInt();
+					writer.write(line+"\n");
 					writer.flush();
 					System.out.println("request sent to server");
 				

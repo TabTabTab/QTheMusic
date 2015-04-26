@@ -30,7 +30,7 @@ public class HostMonitor implements ConnectionMonitor {
 	private int numberOfAllowedClients;
 	private int numberOfConnectedClients = 0;
 	private HostMusicQueue songQueue;
-	private int currentlyPlayingSongID;
+	private int currentlyPlayingSongID = -1;
 
 	public HostMonitor(int numberOfAllowedClients) {
 		this.numberOfAllowedClients = numberOfAllowedClients;
@@ -39,6 +39,9 @@ public class HostMonitor implements ConnectionMonitor {
 		hostId = UNSET_HOST_ID;
 		statusMessage = "";
 		outBox=new ArrayList<QueueActionMessage>();
+	}
+	public synchronized void setCurrentlyPlayingSongID(int trackID){
+		currentlyPlayingSongID=trackID;
 	}
 	
 
@@ -254,6 +257,9 @@ public class HostMonitor implements ConnectionMonitor {
 			QueueActionMessage queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,trackIndex);
 			addAction(queueActionMessage);
 			break;
+		case "list":
+			//skicka "queue" medelanden till klienten som bad om lsit så att den kan veta vilka sågner vi har i kön
+			break;
 		default:
 			System.out.println("Unknown command");
 			return;
@@ -281,11 +287,14 @@ public class HostMonitor implements ConnectionMonitor {
 			case FINISHED_CURRENT_TRACK:
 				message = "F";
 				break;	
+			case STOPPED_TRACK:
+				message = "STOP";
+				break;	
 			default:
 				message = "Unsuccessfull queue message";
 				break;
 			}
-			System.out.println("Jag ska skicka'"+message+"' till alla");
+			System.out.println("Jag ska skicka '"+message+"' till alla");
 			sendMessageToClient(message, recipients);
 		}
 		outBox = new ArrayList<QueueActionMessage>();
