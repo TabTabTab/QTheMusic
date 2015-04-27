@@ -42,7 +42,7 @@ public class UserClient implements Runnable{
 			ClientFromHostReaderThread hostListener=new ClientFromHostReaderThread(socket.getInputStream(),
 					clientMonitor);
 			hostListener.start();
-			System.out.println("Q + track id for queing, 'list' for requesting the whole que");
+			System.out.println("Q + track id for queing, 'list' showing the queue");
 			while(true){
 				System.out.println("what command do you want to send");
 					String line = keyboard.nextLine();
@@ -52,15 +52,12 @@ public class UserClient implements Runnable{
 					System.out.println("request sent to server");
 				
 			}
-		
+			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidResponseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

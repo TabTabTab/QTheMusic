@@ -247,6 +247,7 @@ public class HostMonitor implements ConnectionMonitor {
 	}
 	
 	public synchronized void processRequest(String line, int id) {
+		QueueActionMessage queueActionMessage;
 		System.out.println("Got a request from a client: '" + line + "'");
 		String[] splittedLine = line.split(" ");
 		String command = splittedLine[0];
@@ -254,11 +255,25 @@ public class HostMonitor implements ConnectionMonitor {
 		case "Q":
 			int trackIndex = Integer.parseInt(splittedLine[1]);
 			songQueue.addToQueue(trackIndex);
-			QueueActionMessage queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,trackIndex);
+			queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,trackIndex);
 			addAction(queueActionMessage);
 			break;
 		case "list":
-			//skicka "queue" medelanden till klienten som bad om lsit så att den kan veta vilka sågner vi har i kön
+			if(currentlyPlayingSongID!=-1){
+				queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,currentlyPlayingSongID);
+				queueActionMessage.addRecipient(id);
+				outBox.add(queueActionMessage);
+				queueActionMessage= new QueueActionMessage(Action.STARTED_TRACK,-1);
+				queueActionMessage.addRecipient(id);
+				outBox.add(queueActionMessage);
+			}
+			ArrayList<Integer> copyQueue = songQueue.getCopyOfQueue();
+			for(int trackID : copyQueue){
+				queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,trackID);
+				queueActionMessage.addRecipient(id);
+				outBox.add(queueActionMessage);
+			}
+			notifyAll();
 			break;
 		default:
 			System.out.println("Unknown command");

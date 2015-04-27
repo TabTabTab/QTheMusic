@@ -21,9 +21,9 @@ public class ClientFromHostReaderThread extends Thread{
 	public void run(){
 		BufferedReader br=new BufferedReader(new InputStreamReader(hostStream));
 		try {
-			
+
 			ArrayList<String> availableTracks=retrieveAllSongs(br);
-			System.out.println("We got the following tracks, queue as you wish.");
+			System.out.println("The host got the following tracks, queue as you wish.");
 			musicQueue=new ClientMusicQueue(availableTracks);
 			for(int i=0;i<availableTracks.size();i++){
 				System.out.println("Track ID: "+i+" TrackName: "+availableTracks.get(i));
@@ -33,9 +33,9 @@ public class ClientFromHostReaderThread extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		//lägg in stopp och paus medelanden
-		
+
 		while(true){
 			String message;
 			try {
@@ -56,20 +56,20 @@ public class ClientFromHostReaderThread extends Thread{
 					musicQueue.finishedSong();
 					break;	
 				default:
-					System.out.println("Unknown message");
+					System.out.println("Unknown command from server: '"+message+"'");
 					break;
 				}
-				
-				
+
+
 				//skriv ut nuvarande kön
-				System.out.println("nu skriver jag ut min kö");
+				//System.out.println("nu skriver jag ut min kö");
 				musicQueue.printQueue();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		
+
+
 	}
 	private ArrayList<String> retrieveAllSongs(BufferedReader br) throws IOException{
 		String nbrOfSongsResponse;
