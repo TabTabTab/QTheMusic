@@ -59,8 +59,7 @@ public class ServerMonitor {
 	 *             if the hostId has already been disconnected
 	 */
 
-	public synchronized void removeHost(int hostId)
-			throws InvalidHostIDException {
+	public synchronized void removeHost(int hostId)throws InvalidHostIDException {
 		if (availableIDs.contains(hostId)) {
 			throw new InvalidHostIDException();
 		} else {

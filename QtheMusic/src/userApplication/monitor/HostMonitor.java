@@ -59,6 +59,8 @@ public class HostMonitor implements ConnectionMonitor {
 	 * when an ended connecition is detected.
 	 */
 	public synchronized void removeClient(int clientId) {
+		numberOfConnectedClients--;
+		connectionStreams[clientId] = null;
 		// TODO:
 		/* *
 		 * 1: Make sure the clientId does not appear in any outBox message. (as
@@ -129,14 +131,7 @@ public class HostMonitor implements ConnectionMonitor {
 		System.out.println("written to client");
 		
 	}
-	private synchronized void sendCurrentQueueToClients(int playingSong){
-		ArrayList<Integer> queue=songQueue.getCopyOfQueue();
-		//använd johans sendadata för att faktiskt skicka ngt
-		
-		
-		
-	}
-	
+
 	
 	private synchronized void writeToClient(BufferedWriter bw,String line){
 		try {

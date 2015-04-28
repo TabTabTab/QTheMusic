@@ -36,7 +36,7 @@ public class ClientFromHostReaderThread extends Thread{
 
 		//lägg in stopp och paus medelanden
 
-		while(true){
+		while(!isInterrupted()){
 			String message;
 			try {
 				message = br.readLine();
@@ -65,7 +65,8 @@ public class ClientFromHostReaderThread extends Thread{
 				//System.out.println("nu skriver jag ut min kö");
 			//	musicQueue.printQueue();
 			} catch (IOException e) {
-				e.printStackTrace();
+				this.interrupt();
+				//e.printStackTrace();
 			}
 		}
 

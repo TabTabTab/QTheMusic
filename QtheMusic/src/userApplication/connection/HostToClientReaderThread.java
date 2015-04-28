@@ -34,8 +34,9 @@ public class HostToClientReaderThread extends Thread {
 
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//remove the client
+			hostMonitor.removeClient(id);
+			this.interrupt();
 		}
 	}
 
