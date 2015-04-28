@@ -25,12 +25,12 @@ public class UserClient implements Runnable{
 		clientMonitor=new ClientMonitor();
 	}
 
-	
+
 	public void run(){
 		System.out.println("What host ID do you want to connect to?");
 		Scanner keyboard = new Scanner(System.in);
 		int ID = keyboard.nextInt();
-		
+
 		HostAddressRetriever har=new HostAddressRetriever(serverIp,serverPort);
 		try {
 			//TODO use an hostId defined by the user, not "1"
@@ -42,17 +42,22 @@ public class UserClient implements Runnable{
 			ClientFromHostReaderThread hostListener=new ClientFromHostReaderThread(socket.getInputStream(),
 					clientMonitor);
 			hostListener.start();
+			writer.write("list\n");
+			writer.flush();
 			System.out.println("Q + track id for queing, 'list' showing the queue");
 			while(true){
 				System.out.println("what command do you want to send");
-					String line = keyboard.nextLine();
-				//	int songID = keyboard.nextInt();
+				String line = keyboard.nextLine();
+				if(line.equals("list")){
+					clientMonitor.printQueue();
+				}
+				else{
 					writer.write(line+"\n");
 					writer.flush();
 					System.out.println("request sent to server");
-				
+				}
 			}
-			
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

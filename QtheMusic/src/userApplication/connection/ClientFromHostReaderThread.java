@@ -63,7 +63,7 @@ public class ClientFromHostReaderThread extends Thread{
 
 				//skriv ut nuvarande kön
 				//System.out.println("nu skriver jag ut min kö");
-				musicQueue.printQueue();
+			//	musicQueue.printQueue();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

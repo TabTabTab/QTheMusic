@@ -16,6 +16,9 @@ public class ClientMonitor implements ConnectionMonitor{
 		this.musicQueue=musicQueue;
 		notifyAll();
 	}
+	public synchronized void printQueue(){
+		musicQueue.printQueue();
+	}
 	public synchronized void write(String data) {
 		// TODO Auto-generated method stub
 		
