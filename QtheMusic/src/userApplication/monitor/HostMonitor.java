@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import MusicQueue.Action;
 import MusicQueue.HostMusicQueue;
+import MusicQueue.PlayerCommand;
 import MusicQueue.QueueActionMessage;
 import Protocol.CentralServerProtocol;
 import centralServer.database.ServerMonitor;
@@ -273,6 +274,15 @@ public class HostMonitor implements ConnectionMonitor {
 				outBox.add(queueActionMessage);
 			}
 			notifyAll();
+			break;
+		case "stop":
+			songQueue.setCommand(PlayerCommand.STOP);
+			break;
+		case "play":
+			songQueue.setCommand(PlayerCommand.PLAY);
+			break;
+		case "next":
+			songQueue.setCommand(PlayerCommand.NEXT);
 			break;
 		default:
 			System.out.println("Unknown command");
