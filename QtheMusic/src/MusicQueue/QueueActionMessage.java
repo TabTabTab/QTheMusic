@@ -26,13 +26,14 @@ public class QueueActionMessage {
 		return action;
 	}
 	public void addRecipient(int recipientId){
-		recipients.add(recipientId);
+		recipients.add(new Integer(recipientId));
 	}
+
 	public ArrayList<Integer> getRecipients(){
 		return recipients;
 	}
 	public void removeRecipient(int recipientId){
-		recipients.remove(recipientId);
+		recipients.remove(new Integer(recipientId));
 	}
 	public boolean hasNoRecipients(){
 		return recipients.isEmpty();

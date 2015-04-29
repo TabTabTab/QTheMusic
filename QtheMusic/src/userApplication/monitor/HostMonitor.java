@@ -61,6 +61,10 @@ public class HostMonitor implements ConnectionMonitor {
 	public synchronized void removeClient(int clientId) {
 		numberOfConnectedClients--;
 		connectionStreams[clientId] = null;
+		usedConnections[clientId] = false;
+		for(QueueActionMessage message : outBox){
+			message.removeRecipient(clientId);
+		}
 		// TODO:
 		/* *
 		 * 1: Make sure the clientId does not appear in any outBox message. (as
