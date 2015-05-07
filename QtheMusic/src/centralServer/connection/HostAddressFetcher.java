@@ -64,6 +64,7 @@ public class HostAddressFetcher extends Thread {
 			}
 			sb.append(System.lineSeparator());
 			bw.write(sb.toString());
+			bw.flush();
 		}
 	}
 }
