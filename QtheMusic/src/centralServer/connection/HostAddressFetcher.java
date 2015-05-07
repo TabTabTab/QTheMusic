@@ -33,8 +33,15 @@ public class HostAddressFetcher extends Thread {
 					userClient.getInputStream()));
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 					userClient.getOutputStream()));
-			sendAllAvailableHosts(bw);
-			String msg = br.readLine();
+			boolean update = true;
+			String msg = "";
+			while (update) {
+				sendAllAvailableHosts(bw);
+				msg = br.readLine();
+				if (!msg.equals(ServerMonitor.UPDATE)) {
+					update = false;
+				}
+			}
 			System.out.println("Clients want address for ID:'" + msg + "'");
 			String address = monitor.getHostAddress(msg);
 			System.out.println("that is address: " + address);

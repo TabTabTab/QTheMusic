@@ -7,6 +7,7 @@ public class ServerMonitor {
 	public static final int NO_AVAILABLE_ID = -1;
 	public static final String WRONG_ID = "-1";
 	public static final String NO_AVAILABLE_HOSTS = "-10";
+	public static final String UPDATE = "-3";
 	private LinkedList<Integer> availableIDs;
 	private String[] hostAddresses;
 	private String message;
@@ -103,7 +104,7 @@ public class ServerMonitor {
 		ArrayList<Integer> allHostAddresses = new ArrayList<Integer>();
 		for (int i = 0; i < hostAddresses.length; i++) {
 			if (hostAddresses[i] != null) {
-				allHostAddresses.add(i);
+				allHostAddresses.add(i+1);
 			}
 		}
 		return allHostAddresses;
