@@ -27,14 +27,14 @@ public class UserClient implements Runnable{
 
 
 	public void run(){
-		System.out.println("What host ID do you want to connect to?");
+//		System.out.println("What host ID do you want to connect to?");
 		Scanner keyboard = new Scanner(System.in);
-		int ID = keyboard.nextInt();
+//		int ID = keyboard.nextInt();
 
 		HostAddressRetriever har=new HostAddressRetriever(serverIp,serverPort);
 		try {
 			//TODO use an hostId defined by the user, not "1"
-			InetSocketAddress hostAddress=har.retreiveHostAddress(ID);
+			InetSocketAddress hostAddress=har.retreiveHostAddress(0);
 			System.out.println("We got the host address:");
 			System.out.println(hostAddress);
 			Socket socket = new Socket(hostAddress.getHostString(),hostAddress.getPort());
