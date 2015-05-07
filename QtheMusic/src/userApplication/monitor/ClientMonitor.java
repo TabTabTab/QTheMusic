@@ -3,7 +3,7 @@ package userApplication.monitor;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import MusicQueue.ClientMusicQueue;
+import userApplication.musicQueue.ClientMusicQueue;
 import centralServer.database.ServerMonitor;
 
 public class ClientMonitor implements ConnectionMonitor{

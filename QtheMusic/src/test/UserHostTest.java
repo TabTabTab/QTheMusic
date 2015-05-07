@@ -1,7 +1,7 @@
 package test;
 
 import Protocol.DebugConstants;
-import userApplication.main.UserHost;
+import userApplication.host.main.UserHost;
 import userApplication.monitor.HostMonitor;
 
 public class UserHostTest {

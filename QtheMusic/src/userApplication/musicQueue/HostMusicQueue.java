@@ -1,5 +1,5 @@
 
-package MusicQueue;
+package userApplication.musicQueue;
 
 import java.util.ArrayList;
 

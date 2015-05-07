@@ -1,4 +1,4 @@
-package userApplication.main;
+package userApplication.host.main;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,12 +6,12 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import MusicQueue.HostMusicQueue;
-import MusicQueue.PlayerCommand;
 import Protocol.DebugConstants;
-import userApplication.connection.HostIDFetcherThread;
-import userApplication.connection.IncomingClientListenerThread;
+import userApplication.host.connection.HostIDFetcherThread;
+import userApplication.host.connection.IncomingClientListenerThread;
 import userApplication.monitor.HostMonitor;
+import userApplication.musicQueue.HostMusicQueue;
+import userApplication.musicQueue.PlayerCommand;
 
 public class UserHost implements Runnable{
 	HostMonitor monitor;

@@ -1,4 +1,4 @@
-package userApplication.connection;
+package userApplication.client.connection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
-import MusicQueue.ClientMusicQueue;
 import userApplication.monitor.ClientMonitor;
+import userApplication.musicQueue.ClientMusicQueue;
 
 public class ClientFromHostReaderThread extends Thread{
 	private InputStream hostStream;

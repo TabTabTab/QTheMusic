@@ -9,10 +9,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import MusicQueue.Action;
-import MusicQueue.HostMusicQueue;
-import MusicQueue.PlayerCommand;
-import MusicQueue.QueueActionMessage;
+import userApplication.musicQueue.Action;
+import userApplication.musicQueue.HostMusicQueue;
+import userApplication.musicQueue.PlayerCommand;
+import userApplication.musicQueue.QueueActionMessage;
 import Protocol.CentralServerProtocol;
 import centralServer.database.ServerMonitor;
 

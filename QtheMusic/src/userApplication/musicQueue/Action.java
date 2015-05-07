@@ -1,4 +1,4 @@
-package MusicQueue;
+package userApplication.musicQueue;
 
 public enum Action {
 	REMOVE_TRACK, 

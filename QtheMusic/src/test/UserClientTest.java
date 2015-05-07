@@ -1,7 +1,7 @@
 package test;
 
 import Protocol.DebugConstants;
-import userApplication.main.UserClient;
+import userApplication.client.main.UserClient;
 
 public class UserClientTest {
 	public static void main(String[] args){

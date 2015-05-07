@@ -1,4 +1,4 @@
-package userApplication.connection;
+package userApplication.host.connection;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

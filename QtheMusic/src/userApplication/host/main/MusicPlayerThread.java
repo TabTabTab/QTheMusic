@@ -1,4 +1,4 @@
-package userApplication.main;
+package userApplication.host.main;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -6,18 +6,17 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import userApplication.monitor.HostMonitor;
-
+import userApplication.musicQueue.Action;
+import userApplication.musicQueue.HostMusicQueue;
+import userApplication.musicQueue.PlayerCommand;
+import userApplication.musicQueue.QueueActionMessage;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
-import MusicQueue.Action;
 //import sun.audio.AudioPlayer;
 //import sun.audio.AudioStrea
-import MusicQueue.HostMusicQueue;
-import MusicQueue.PlayerCommand;
-import MusicQueue.QueueActionMessage;
 
 public class MusicPlayerThread extends Thread {
 	private int pausedOnFrame;

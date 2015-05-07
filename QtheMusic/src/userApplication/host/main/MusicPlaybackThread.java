@@ -1,9 +1,9 @@
-package userApplication.main;
+package userApplication.host.main;
 
+import userApplication.musicQueue.HostMusicQueue;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
-import MusicQueue.HostMusicQueue;
 
 public class MusicPlaybackThread extends Thread{
 

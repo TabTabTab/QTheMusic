@@ -1,4 +1,4 @@
-package userApplication.main;
+package userApplication.client.main;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,9 +10,12 @@ import java.util.Scanner;
 
 
 
-import userApplication.connection.ClientFromHostReaderThread;
-import userApplication.connection.HostAddressRetriever;
-import userApplication.connection.InvalidResponseException;
+
+
+
+import userApplication.client.connection.ClientFromHostReaderThread;
+import userApplication.client.connection.HostAddressRetriever;
+import userApplication.client.connection.InvalidResponseException;
 import userApplication.monitor.ClientMonitor;
 
 public class UserClient implements Runnable{
