@@ -1,11 +1,12 @@
 package centralServer.database;
 
-import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class ServerMonitor {
 	public static final int NO_AVAILABLE_ID = -1;
 	public static final String WRONG_ID = "-1";
+	public static final String NO_AVAILABLE_HOSTS = "-10";
 	private LinkedList<Integer> availableIDs;
 	private String[] hostAddresses;
 	private String message;
@@ -22,7 +23,7 @@ public class ServerMonitor {
 	public ServerMonitor(int capacity) {
 		hostAddresses = new String[capacity];
 		hostAddresses[0] = "hejsan johan och denhi:1337";
-		availableIDs = new LinkedList<Integer>(); 
+		availableIDs = new LinkedList<Integer>();
 		for (int i = 1; i <= capacity; i++) {
 			availableIDs.add(i);
 		}
@@ -32,24 +33,26 @@ public class ServerMonitor {
 	 * Registers a user host and gives it an ID is there are any available
 	 * 
 	 * @param hostIp
-	 * @param hostPort 
+	 * @param hostPort
 	 * @return an int representing an id if success or NO_AVAILABLE_ID if
 	 *         unsuccessful
 	 * 
 	 */
-	public synchronized int registerHost(String hostIp,int hostPort) {
+	public synchronized int registerHost(String hostIp, int hostPort) {
 		if (availableIDs.isEmpty()) {
 			return NO_AVAILABLE_ID;
 		} else {
-			int hostId=availableIDs.removeFirst();
-			hostAddresses[hostId-1] = createAddressString(hostIp,hostPort);
+			int hostId = availableIDs.removeFirst();
+			hostAddresses[hostId - 1] = createAddressString(hostIp, hostPort);
 			return hostId;
 		}
 	}
-	private String createAddressString(String ip,int port){
-		String addressString=ip+":"+port;
+
+	private String createAddressString(String ip, int port) {
+		String addressString = ip + ":" + port;
 		return addressString;
 	}
+
 	/**
 	 * Removes a host connection and makes the ID that host had available again.
 	 * 
@@ -59,7 +62,8 @@ public class ServerMonitor {
 	 *             if the hostId has already been disconnected
 	 */
 
-	public synchronized void removeHost(int hostId)throws InvalidHostIDException {
+	public synchronized void removeHost(int hostId)
+			throws InvalidHostIDException {
 		if (availableIDs.contains(hostId)) {
 			throw new InvalidHostIDException();
 		} else {
@@ -79,22 +83,37 @@ public class ServerMonitor {
 	public synchronized String getHostAddress(String id) {
 		try {
 			int hostId = Integer.parseInt(id);
-			if (hostAddresses[hostId-1] == null) {
-				return WRONG_ID+System.lineSeparator();
+			if (hostAddresses[hostId - 1] == null) {
+				return WRONG_ID + System.lineSeparator();
 			} else {
-				String address = hostAddresses[hostId-1];
+				String address = hostAddresses[hostId - 1];
 				return address + System.lineSeparator();
 			}
 		} catch (NumberFormatException e) {
-			return WRONG_ID+System.lineSeparator();
+			return WRONG_ID + System.lineSeparator();
 		}
 	}
+
+	/**
+	 * Returns all ids to the currently running hosts.  
+	 * @return a list of integers representing ids
+	 */
 	
-	public synchronized void setMessage(String msg){
+	public synchronized ArrayList<Integer> getAllHostAddresses() {
+		ArrayList<Integer> allHostAddresses = new ArrayList<Integer>();
+		for (int i = 0; i < hostAddresses.length; i++) {
+			if (hostAddresses[i] != null) {
+				allHostAddresses.add(i);
+			}
+		}
+		return allHostAddresses;
+	}
+
+	public synchronized void setMessage(String msg) {
 		message = msg;
 	}
-	
-	public synchronized String getMessage(){
+
+	public synchronized String getMessage() {
 		return message;
 	}
 }

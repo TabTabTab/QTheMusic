@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import centralServer.database.ServerMonitor;
 
@@ -32,16 +33,37 @@ public class HostAddressFetcher extends Thread {
 					userClient.getInputStream()));
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 					userClient.getOutputStream()));
+			sendAllAvailableHosts(bw);
 			String msg = br.readLine();
-			System.out.println("Clients want address for ID:'"+msg+"'");
+			System.out.println("Clients want address for ID:'" + msg + "'");
 			String address = monitor.getHostAddress(msg);
-			System.out.println("that is address: "+address);
+			System.out.println("that is address: " + address);
 			bw.write(address);
 			bw.flush();
 			userClient.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
+	}
+
+	private void sendAllAvailableHosts(BufferedWriter bw) throws IOException,
+			InterruptedException {
+		ArrayList<Integer> availableHosts = monitor.getAllHostAddresses();
+		StringBuilder sb = new StringBuilder();
+		if (availableHosts.isEmpty()) {
+			bw.write(ServerMonitor.NO_AVAILABLE_HOSTS + System.lineSeparator());
+			bw.flush();
+			throw new InterruptedException();
+		} else {
+			for (Integer i : availableHosts) {
+				sb.append(i + " ");
+			}
+			sb.append(System.lineSeparator());
+			bw.write(sb.toString());
+		}
 	}
 }

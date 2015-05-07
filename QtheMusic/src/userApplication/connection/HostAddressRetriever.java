@@ -23,12 +23,24 @@ public class HostAddressRetriever {
 		Socket serverConnectionSocket=new Socket(centralServerIp,centralServerPort);
 		OutputStream os=serverConnectionSocket.getOutputStream();
 		InputStream is=serverConnectionSocket.getInputStream();
+		fetchAllHosts(is);
 		makeHostAddressRequest(os,hostId);
 		InetSocketAddress hostAddress=retreiveHostAddressResponse(is);
 		serverConnectionSocket.close();
 		return hostAddress;
 	}
 
+	private void fetchAllHosts(InputStream is) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		String message = br.readLine();
+		String[] list = message.split(" ");
+		System.out.println("Available Hosts: ");
+		for(String s: list){
+			System.out.println(s);
+		}
+		System.out.println("-----------");
+		
+	}
 	private void makeHostAddressRequest(OutputStream os,int hostId) throws IOException{
 		BufferedWriter br=new BufferedWriter(new OutputStreamWriter(os));
 		br.write(hostId+System.lineSeparator());
