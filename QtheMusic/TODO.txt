@@ -4,25 +4,14 @@ ALWAYS ACTIVE: Correct all variable names etc. Host, Client and CentralServer sh
 
 
 
-Host should be able to send all available tracks to the client.
-
-Host should be able to sent queue ADD/queue REMOVE to Client. (No index yet).
-
 Define client-host protocol.
 
 Error checking everywhere!
 
-HTTP research.
+Create Host gui for controlling the music
 
+Create Android Client Android App
 
-MusicPlayer support multiple file formats.
-
-An Administrator Client should be created (next, pause etc).
-
-Implement a pause function for the player.
-
-
-Reset BufferStreams when stopping a song.
 
 Need to debug the music player threads, and hostmusicqueue methods
  
