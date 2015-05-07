@@ -15,3 +15,5 @@ Create Android Client Android App
 
 Need to debug the music player threads, and hostmusicqueue methods
  
+ 
+kill host when server dies

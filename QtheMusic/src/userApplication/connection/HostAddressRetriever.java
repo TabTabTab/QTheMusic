@@ -35,13 +35,15 @@ public class HostAddressRetriever {
 			System.out
 					.println("What host ID do you want to connect to (-3 for update list)?");
 			int ID = keyboard.nextInt();
-			// TODO: Remove hårdkodat shit
-			if (ID == -3) {
+			// TODO: Remove hï¿½rdkodat shit
+			System.out.println(ID);
+			if (ID != -3) {
 				update = false;
 			}
-			makeHostAddressRequest(os, hostId);
+			makeHostAddressRequest(os, ID);
 		}
 		InetSocketAddress hostAddress = retreiveHostAddressResponse(is);
+		System.out.println("we are closing!!");
 		serverConnectionSocket.close();
 		return hostAddress;
 	}

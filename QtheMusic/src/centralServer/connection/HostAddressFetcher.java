@@ -37,7 +37,9 @@ public class HostAddressFetcher extends Thread {
 			String msg = "";
 			while (update) {
 				sendAllAvailableHosts(bw);
+				System.out.println("sending list to client");
 				msg = br.readLine();
+				System.out.println("we got this msg fro mthe  client: "+msg);
 				if (!msg.equals(ServerMonitor.UPDATE)) {
 					update = false;
 				}
