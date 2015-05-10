@@ -30,7 +30,12 @@ public class HostToClientReaderThread extends Thread {
 			reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			while (!isInterrupted()) {
 				String line = reader.readLine();
-				hostMonitor.processRequest(line, id);
+				if(line!=null){
+					hostMonitor.processRequest(line, id);
+					}
+				else{
+					throw new IOException();
+				}
 
 			}
 		} catch (IOException e) {
