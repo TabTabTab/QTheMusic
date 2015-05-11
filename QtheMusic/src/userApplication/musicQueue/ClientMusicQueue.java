@@ -1,5 +1,7 @@
 package userApplication.musicQueue;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 
@@ -39,12 +41,24 @@ public class ClientMusicQueue extends MusicQueue{
 					System.out.println("Currently playing: "+availableTracks.get(trackID));
 				}
 				else{
-					System.out.println(availableTracks.get(trackID));
+					
+					try {
+						String track = URLDecoder.decode(availableTracks.get(trackID),"UTF-8");
+						System.out.println(track);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 				}
 				firstSong=false;
 			}
 			else{
-				System.out.println(availableTracks.get(trackID));
+				String track;
+				try {
+					track = URLDecoder.decode(availableTracks.get(trackID),"UTF-8");
+					System.out.println(track);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

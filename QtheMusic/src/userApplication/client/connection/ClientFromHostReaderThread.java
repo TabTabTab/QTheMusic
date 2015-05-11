@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import userApplication.monitor.ClientMonitor;
@@ -26,7 +27,8 @@ public class ClientFromHostReaderThread extends Thread{
 			System.out.println("The host got the following tracks, queue as you wish.");
 			musicQueue=new ClientMusicQueue(availableTracks);
 			for(int i=0;i<availableTracks.size();i++){
-				System.out.println("Track ID: "+i+" TrackName: "+availableTracks.get(i));
+				String track = URLDecoder.decode(availableTracks.get(i),"UTF-8");
+				System.out.println("Track ID: "+i+" TrackName: "+ track);
 			}
 			clientMonitor.setMusicQueue(musicQueue);
 		} catch (IOException e) {

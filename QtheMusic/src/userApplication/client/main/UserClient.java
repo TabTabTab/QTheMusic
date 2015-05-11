@@ -49,7 +49,7 @@ public class UserClient implements Runnable{
 			writer.flush();
 			System.out.println("Q + track id for queing, 'list' showing the queue");
 			while(true){
-				System.out.println("what command do you want to send");
+				System.out.println("What command would you want to send?");
 				String line = keyboard.nextLine();
 				if(line.equals("list")){
 					clientMonitor.printQueue();

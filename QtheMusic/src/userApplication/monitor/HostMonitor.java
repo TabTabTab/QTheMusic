@@ -1,12 +1,14 @@
-
 package userApplication.monitor;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import userApplication.musicQueue.Action;
@@ -39,12 +41,12 @@ public class HostMonitor implements ConnectionMonitor {
 		connectionStreams = new OutputStream[numberOfAllowedClients];
 		hostId = UNSET_HOST_ID;
 		statusMessage = "";
-		outBox=new ArrayList<QueueActionMessage>();
+		outBox = new ArrayList<QueueActionMessage>();
 	}
-	public synchronized void setCurrentlyPlayingSongID(int trackID){
-		currentlyPlayingSongID=trackID;
+
+	public synchronized void setCurrentlyPlayingSongID(int trackID) {
+		currentlyPlayingSongID = trackID;
 	}
-	
 
 	public synchronized void setMusicQueue(HostMusicQueue songQueue) {
 		this.songQueue = songQueue;
@@ -63,7 +65,7 @@ public class HostMonitor implements ConnectionMonitor {
 		numberOfConnectedClients--;
 		connectionStreams[clientId] = null;
 		usedConnections[clientId] = false;
-		for(QueueActionMessage message : outBox){
+		for (QueueActionMessage message : outBox) {
 			message.removeRecipient(clientId);
 		}
 		// TODO:
@@ -124,34 +126,39 @@ public class HostMonitor implements ConnectionMonitor {
 		return id;
 
 	}
-	private synchronized void sendAvailableTracksToClient(int clientId){
+
+	private synchronized void sendAvailableTracksToClient(int clientId) {
 		System.out.println("writing tracks to client");
-		OutputStream clientOS=connectionStreams[clientId];
-		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(clientOS));
-		ArrayList<String> availableTracks=songQueue.getAvailableTracks();
-		writeToClient(bw,""+availableTracks.size());
-		for(String track:songQueue.getAvailableTracks()){
-			writeToClient(bw,track);
+		OutputStream clientOS = connectionStreams[clientId];
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(clientOS));
+		ArrayList<String> availableTracks = songQueue.getAvailableTracks();
+		writeToClient(bw, "" + availableTracks.size());
+		for (String track : songQueue.getAvailableTracks()) {
+			try {
+				track = URLEncoder.encode(track, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			writeToClient(bw, track);
 		}
 		System.out.println("written to client");
-		
+
 	}
 
-	
-	private synchronized void writeToClient(BufferedWriter bw,String line){
+	private synchronized void writeToClient(BufferedWriter bw, String line) {
 		try {
-			bw.write(line+System.lineSeparator());
+			bw.write(line + System.lineSeparator());
 			bw.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 	public synchronized String read() throws InterruptedException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	public synchronized String getHostAddress() {
 		// TODO Auto-generated method stub
@@ -245,7 +252,7 @@ public class HostMonitor implements ConnectionMonitor {
 		outBox.add(action);
 		notifyAll();
 	}
-	
+
 	public synchronized void processRequest(String line, int id) {
 		QueueActionMessage queueActionMessage;
 		System.out.println("Got a request from a client: '" + line + "'");
@@ -255,21 +262,25 @@ public class HostMonitor implements ConnectionMonitor {
 		case "Q":
 			int trackIndex = Integer.parseInt(splittedLine[1]);
 			songQueue.addToQueue(trackIndex);
-			queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,trackIndex);
+			queueActionMessage = new QueueActionMessage(Action.ADD_TRACK,
+					trackIndex);
 			addAction(queueActionMessage);
 			break;
 		case "list":
-			if(currentlyPlayingSongID!=-1){
-				queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,currentlyPlayingSongID);
+			if (currentlyPlayingSongID != -1) {
+				queueActionMessage = new QueueActionMessage(Action.ADD_TRACK,
+						currentlyPlayingSongID);
 				queueActionMessage.addRecipient(id);
 				outBox.add(queueActionMessage);
-				queueActionMessage= new QueueActionMessage(Action.STARTED_TRACK,-1);
+				queueActionMessage = new QueueActionMessage(
+						Action.STARTED_TRACK, -1);
 				queueActionMessage.addRecipient(id);
 				outBox.add(queueActionMessage);
 			}
 			ArrayList<Integer> copyQueue = songQueue.getCopyOfQueue();
-			for(int trackID : copyQueue){
-				queueActionMessage= new QueueActionMessage(Action.ADD_TRACK,trackID);
+			for (int trackID : copyQueue) {
+				queueActionMessage = new QueueActionMessage(Action.ADD_TRACK,
+						trackID);
 				queueActionMessage.addRecipient(id);
 				outBox.add(queueActionMessage);
 			}
@@ -291,7 +302,8 @@ public class HostMonitor implements ConnectionMonitor {
 
 	}
 
-	public synchronized void sendData() throws InterruptedException, IOException {
+	public synchronized void sendData() throws InterruptedException,
+			IOException {
 		while (outBox.isEmpty()) {
 			wait();
 		}
@@ -300,7 +312,7 @@ public class HostMonitor implements ConnectionMonitor {
 			String message;
 			switch (queueMessage.getAction()) {
 			case ADD_TRACK:
-				message = "A "+queueMessage.getTrackindex();
+				message = "A " + queueMessage.getTrackindex();
 				break;
 			case REMOVE_TRACK:
 				message = "Track got removed";
@@ -310,15 +322,15 @@ public class HostMonitor implements ConnectionMonitor {
 				break;
 			case FINISHED_CURRENT_TRACK:
 				message = "F";
-				break;	
+				break;
 			case STOPPED_TRACK:
 				message = "STOP";
-				break;	
+				break;
 			default:
 				message = "Unsuccessfull queue message";
 				break;
 			}
-			System.out.println("Jag ska skicka '"+message+"' till alla");
+			System.out.println("Jag ska skicka '" + message + "' till alla");
 			sendMessageToClient(message, recipients);
 		}
 		outBox = new ArrayList<QueueActionMessage>();
@@ -340,4 +352,3 @@ public class HostMonitor implements ConnectionMonitor {
 	}
 
 }
-
