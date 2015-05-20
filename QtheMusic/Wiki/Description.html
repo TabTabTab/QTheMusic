@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QTM - Description</title>
+</head>
+<body>
+
+<h1>QTheMusic</h1>
+
+	<h2>Abstract Description</h2>
+		<p><i>
+			The QTheMusic project is an attempt to revolutionize the average play list, making it interactive 
+			in a way that lets multiple devices contribute to the order in which the tracks are played.
+		</i></p>
+
+	<h2>Entity Description</h2>
+		<p><i>
+			The intended finished product essentially consists of three entities: A central server, 
+			a host application and a client application. The communication between the three entities 
+			happens over the internet using the TCP protocol.
+		</i></p>
+	
+		<h3><i>The Central Server</i></h3>
+			<p>
+				<i>The Central Server</i> essentially serves as a lookup table or a DNS server.
+				A host may register itself at the central server which makes a client able to find
+				its address and port which is open to clients. 
+				A host will then remain connected to the central server until it is no longer hosting.
+			</p>
+		<h3><i>The Host</i></h3>
+			<p>
+				<i>The Host</i> has list of tracks which it makes available to all its clients.
+				The clients connected to the host may then choose which tracks should be played by the host.
+				This is done using a queue, each client may add tracks to the queue.
+				Multiple clients may be connected to the host at a time.
+				<i>The Host</i> needs to register and stay connected to <i>The Central Server</i> in order for it to act as a host.
+			</p>
+		<h3><i>The Client</i></h3>
+			<p>
+				<i>The Client</i> connects to a host in order to partake in the creation of the music queue.
+				<i>The Client</i> can then choose what tracks will be played by the host by adding them to <i>The Host</i>s queue.
+			</p>
+	
+</body>
+</html>

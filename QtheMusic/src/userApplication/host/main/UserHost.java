@@ -48,7 +48,7 @@ public class UserHost implements Runnable{
 		Scanner scanner = new Scanner(System.in);
 		
 		while(true){
-			System.out.println("Please write a command pls");
+			System.out.println("Commands:\n STOP: 1 \n NEXT: 2 \n PLAY: 3\nPlease write a command pls ");
 			int command = scanner.nextInt();
 			// 1 == stop, 2 = next, 3 = play 4 == nothing
 			switch (command){
@@ -63,7 +63,10 @@ public class UserHost implements Runnable{
 				break;
 			
 			case 4:
-				queue.setCommand(PlayerCommand.PAUSE);
+				//queue.setCommand(PlayerCommand.PAUSE);
+				//break;
+			default:
+				System.out.println("unknown command");
 				break;
 			}
 		}
