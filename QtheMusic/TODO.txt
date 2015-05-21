@@ -17,3 +17,25 @@ Need to debug the music player threads, and hostmusicqueue methods
  
  
 kill host when server dies
+
+
+PRESENTATION:
+
+deltagare
+
+problem löst av appen
+
+beskriv lösningen
+
+arkitektur (graphics & dataflow & viktiga klasser)
+
+demonstration
+
+ca 5 slides
+
+
+
+
+Add slides to github
+
+Rapport to github
