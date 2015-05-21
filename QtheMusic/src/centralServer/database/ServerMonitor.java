@@ -84,7 +84,7 @@ public class ServerMonitor {
 	public synchronized String getHostAddress(String id) {
 		try {
 			int hostId = Integer.parseInt(id);
-			if(hostId-1 > hostAddresses.length || hostId -1 < 0){
+			if(hostId > hostAddresses.length || hostId -1 < 0){
 				return WRONG_ID + System.lineSeparator();
 			}
 			if (hostAddresses[hostId - 1] == null) {

@@ -17,8 +17,15 @@
 
 <h1>QTheMusic</h1>
 
-
-
+	<h2>Design</h2>
+		<p>
+			The program consists of three essential parts, the centralserver, the user host and the user client.
+			The central server acts as a dns which maps host ip address to a host id. The user host then waits for clients to connect to it. 
+			The inputstream and outputstream are divided into threads. 
+			The user client communicates with the central server to request the ip address of a given host by sending a host id to the central server.
+			When the user client has found the ip address it attempts to connect to the user host. The user client also has the reading and writing of strings in separate threads.
+			Our program uses tcp for sending traffic. 
+			</p>
 
 
 
